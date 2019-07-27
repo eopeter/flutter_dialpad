@@ -1,3 +1,7 @@
+## [0.0.3] - 2019-07-26
+
+* Added Example and Overflow Bug Fix
+
 ## [0.0.2] - 2019-07-26
 
 * Clean up code per pub.dev suggestions

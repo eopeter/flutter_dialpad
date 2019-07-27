@@ -9,7 +9,7 @@ packages:
     source: hosted
     version: "2.2.0"
   auto_size_text:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: auto_size_text
       url: "https://pub.dartlang.org"
@@ -36,13 +36,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.14.11"
+  cupertino_icons:
+    dependency: "direct main"
+    description:
+      name: cupertino_icons
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.2"
   flutter:
     dependency: "direct main"
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_dialpad:
+    dependency: "direct dev"
+    description:
+      path: ".."
+      relative: true
+    source: path
+    version: "0.0.3"
   flutter_masked_text:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: flutter_masked_text
       url: "https://pub.dartlang.org"

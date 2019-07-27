@@ -30,7 +30,7 @@ class _DialPadState extends State<DialPad> {
   //var dtmf = DTMF();
   MaskedTextController textEditingController;
   var _value = "";
-  var mainTitle = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "✳︎", "0", "＃"];
+  var mainTitle = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "*", "0", "＃"];
   var subTitle = [
     "",
     "ABC",
@@ -41,9 +41,9 @@ class _DialPadState extends State<DialPad> {
     "PQRS",
     "TUV",
     "WXYZ",
-    "",
+    null,
     "+",
-    ""
+    null
   ];
 
   @override
@@ -95,13 +95,17 @@ class _DialPadState extends State<DialPad> {
 
   @override
   Widget build(BuildContext context) {
+
+    var screenSize = MediaQuery.of(context).size;
+    var sizeFactor = screenSize.height * 0.09852217;
+
     return Center(
       child: Column(
         children: <Widget>[
           Padding(
             padding: EdgeInsets.all(20),
             child: TextFormField(
-              style: TextStyle(color: Colors.white, fontSize: 40),
+              style: TextStyle(color: Colors.white, fontSize: sizeFactor / 2),
               textAlign: TextAlign.center,
               decoration: InputDecoration(border: InputBorder.none),
               controller: textEditingController,
@@ -127,7 +131,7 @@ class _DialPadState extends State<DialPad> {
                       icon: Icons.phone,
                       color: Colors.green,
                       onTap: (title) {
-                        Navigator.of(context).pop();
+
                       },
                     ),
                   ),
@@ -135,11 +139,11 @@ class _DialPadState extends State<DialPad> {
               ),
               Expanded(
                 child: Padding(
-                  padding: EdgeInsets.only(right: 30),
+                  padding: EdgeInsets.only(right: screenSize.height * 0.03685504),
                   child: IconButton(
                     icon: Icon(
                       Icons.backspace,
-                      size: 40,
+                      size: sizeFactor / 2,
                       color: _value.length > 0
                           ? (widget.backspaceButtonIconColor != null
                               ? widget.backspaceButtonIconColor
@@ -242,8 +246,8 @@ class _DialButtonState extends State<DialButton>
               animation: _colorTween,
               builder: (context, child) => Container(
                     color: _colorTween.value,
-                    height: sizeFactor, // height of the button
-                    width: sizeFactor, // width of the button
+                    height: sizeFactor,
+                    width: sizeFactor,
                     child: Center(
                         child: widget.icon == null
                             ? widget.subtitle != null
