@@ -14,6 +14,7 @@ This is a purely Dart widget with no dependency on Android or iOS.
       body: SafeArea(
         child:
             DialPad(
+                enableDtmf: true,
                 backspaceButtonIconColor: Colors.red,
                 makeCall: (number){
                     print(number);
@@ -26,4 +27,4 @@ This is a purely Dart widget with no dependency on Android or iOS.
 ```
 
 ## To Do
-Add DTMF Tones
+[Done] Add DTMF Tones

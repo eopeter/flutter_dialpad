@@ -22,6 +22,7 @@ class _MyAppState extends State<MyApp> {
         body: SafeArea(
             child:
             DialPad(
+                enableDtmf: true,
                 backspaceButtonIconColor: Colors.red,
                 makeCall: (number){
                   print(number);

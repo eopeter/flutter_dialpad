@@ -3,7 +3,7 @@ library flutter_dialpad;
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
-//import 'package:flutter_dtmf/flutter_dtmf.dart';
+import 'package:flutter_dtmf/flutter_dtmf.dart';
 
 class DialPad extends StatefulWidget {
   final ValueSetter<String> makeCall;
@@ -13,6 +13,8 @@ class DialPad extends StatefulWidget {
   final Color dialButtonIconColor;
   final Color backspaceButtonIconColor;
   final String outputMask;
+  final bool enableDtmf;
+
   DialPad(
       {this.makeCall,
       this.outputMask,
@@ -20,14 +22,15 @@ class DialPad extends StatefulWidget {
       this.buttonTextColor,
       this.dialButtonColor,
       this.dialButtonIconColor,
-      this.backspaceButtonIconColor});
+      this.backspaceButtonIconColor,
+      this.enableDtmf});
 
   @override
   _DialPadState createState() => _DialPadState();
 }
 
 class _DialPadState extends State<DialPad> {
-  //var dtmf = DTMF();
+
   MaskedTextController textEditingController;
   var _value = "";
   var mainTitle = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "*", "0", "＃"];
@@ -48,13 +51,17 @@ class _DialPadState extends State<DialPad> {
 
   @override
   void initState() {
+
     textEditingController = MaskedTextController(
         mask: widget.outputMask != null ? widget.outputMask : '(000) 000-0000');
     super.initState();
   }
 
   _setText(String value) async {
-    //await dtmf.playTone(value);
+
+    if(widget.enableDtmf == null || widget.enableDtmf)
+      FlutterDtmf.playTone(digits: value);
+
     setState(() {
       _value += value;
       textEditingController.text = _value;
@@ -130,7 +137,7 @@ class _DialPadState extends State<DialPad> {
                     child: DialButton(
                       icon: Icons.phone,
                       color: Colors.green,
-                      onTap: (title) {
+                      onTap: (value) {
 
                       },
                     ),

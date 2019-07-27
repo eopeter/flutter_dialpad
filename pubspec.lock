@@ -8,13 +8,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.0"
-  auto_size_text:
-    dependency: "direct main"
-    description:
-      name: auto_size_text
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.2+1"
   boolean_selector:
     dependency: transitive
     description:
@@ -41,6 +34,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_dtmf:
+    dependency: "direct main"
+    description:
+      name: flutter_dtmf
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1"
   flutter_masked_text:
     dependency: "direct main"
     description:

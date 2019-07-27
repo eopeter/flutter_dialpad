@@ -2,7 +2,7 @@
 
 A phone dialer widget that can be added to any Flutter Application to enable ability to dial a number. This could be combined with a voip application to enable placing calls.
 
-This is a purely Dart widget with no dependency on Android or iOS.
+This is a purely Dart widget with no dependency on Android or iOS except for the flutter_dtmf package it uses for DTMF tone generation on pressing a button. You can turn it off my setting ```enableDtmf: true```
 
 ## Getting Started
 
@@ -14,6 +14,7 @@ This is a purely Dart widget with no dependency on Android or iOS.
       body: SafeArea(
         child:
             DialPad(
+                enableDtmf: true,
                 backspaceButtonIconColor: Colors.red,
                 makeCall: (number){
                     print(number);
@@ -31,6 +32,6 @@ This is a purely Dart widget with no dependency on Android or iOS.
 | iOS Screenshot | Android Screenshot |
 
 ## To Do
-* Add DTMF Tones
+[Done] Add DTMF Tones
 * Shrink Ouput to Fit
 * Support for Local Numbers in Text Input Mask

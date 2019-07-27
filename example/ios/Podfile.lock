@@ -1,15 +1,21 @@
 PODS:
   - Flutter (1.0.0)
+  - flutter_dtmf (0.0.1):
+    - Flutter
 
 DEPENDENCIES:
   - Flutter (from `.symlinks/flutter/ios`)
+  - flutter_dtmf (from `.symlinks/plugins/flutter_dtmf/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: ".symlinks/flutter/ios"
+  flutter_dtmf:
+    :path: ".symlinks/plugins/flutter_dtmf/ios"
 
 SPEC CHECKSUMS:
   Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
+  flutter_dtmf: 3b1c74fc2fc7b74fe84144c7eecb7c6b903507b0
 
 PODFILE CHECKSUM: 57404445183a62c76f3fc9efaf2238cd4f60c3b9
 

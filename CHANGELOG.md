@@ -1,3 +1,7 @@
+## [0.0.4] - 2019-07-27
+
+* Added DTMF Tone and Option to Turn it Off
+
 ## [0.0.3] - 2019-07-26
 
 * Added Example and Overflow Bug Fix
