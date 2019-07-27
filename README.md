@@ -26,7 +26,7 @@ This is a purely Dart widget with no dependency on Android or iOS.
 ```
 ## Screenshots
 
-![iOS Screenshot](screenshots/screenshot1.png?raw=true "iOS Screenshot") ![Android Screenshot](screenshots/screenshot2.png?raw=true "Android Screenshot")
+![iOS Screenshot](screenshots/screenshot1.png?raw=true "iOS Screenshot") | ![Android Screenshot](screenshots/screenshot2.png?raw=true "Android Screenshot")
 |:---:|:---:|
 | iOS Screenshot | Android Screenshot |
 
