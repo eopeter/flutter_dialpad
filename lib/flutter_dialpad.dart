@@ -1,10 +1,9 @@
 library flutter_dialpad;
 
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 //import 'package:flutter_dtmf/flutter_dtmf.dart';
-
-import 'dialbutton.dart';
 
 class DialPad extends StatefulWidget {
   final ValueSetter<String> makeCall;
@@ -16,12 +15,12 @@ class DialPad extends StatefulWidget {
   final String outputMask;
   DialPad(
       {this.makeCall,
-        this.outputMask,
-        this.buttonColor,
-        this.buttonTextColor,
-        this.dialButtonColor,
-        this.dialButtonIconColor,
-        this.backspaceButtonIconColor});
+      this.outputMask,
+      this.buttonColor,
+      this.buttonTextColor,
+      this.dialButtonColor,
+      this.dialButtonIconColor,
+      this.backspaceButtonIconColor});
 
   @override
   _DialPadState createState() => _DialPadState();
@@ -65,12 +64,14 @@ class _DialPadState extends State<DialPad> {
   List<Widget> _getDialerButtons() {
     var rows = List<Widget>();
     var items = List<Widget>();
-    for (var i = 0; i < mainTitle.length; i++) {
 
+    for (var i = 0; i < mainTitle.length; i++) {
       if (i % 3 == 0 && i > 0) {
         rows.add(Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: items));
-        rows.add(SizedBox(height: 12,));
+        rows.add(SizedBox(
+          height: 12,
+        ));
         items = List<Widget>();
       }
 
@@ -83,9 +84,11 @@ class _DialPadState extends State<DialPad> {
       ));
     }
     //To Do: Fix this workaround for last row
-    rows.add(Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: items));
-    rows.add(SizedBox(height: 12,));
+    rows.add(
+        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: items));
+    rows.add(SizedBox(
+      height: 12,
+    ));
 
     return rows;
   }
@@ -105,7 +108,6 @@ class _DialPadState extends State<DialPad> {
             ),
           ),
           ..._getDialerButtons(),
-
           SizedBox(
             height: 15,
           ),
@@ -140,20 +142,20 @@ class _DialPadState extends State<DialPad> {
                       size: 40,
                       color: _value.length > 0
                           ? (widget.backspaceButtonIconColor != null
-                          ? widget.backspaceButtonIconColor
-                          : Colors.white24)
+                              ? widget.backspaceButtonIconColor
+                              : Colors.white24)
                           : Colors.white24,
                     ),
                     onPressed: _value.length == 0
                         ? null
                         : () {
-                      if (_value != null && _value.length > 0) {
-                        setState(() {
-                          _value = _value.substring(0, _value.length - 1);
-                          textEditingController.text = _value;
-                        });
-                      }
-                    },
+                            if (_value != null && _value.length > 0) {
+                              setState(() {
+                                _value = _value.substring(0, _value.length - 1);
+                                textEditingController.text = _value;
+                              });
+                            }
+                          },
                   ),
                 ),
               )
@@ -161,6 +163,125 @@ class _DialPadState extends State<DialPad> {
           )
         ],
       ),
+    );
+  }
+}
+
+class DialButton extends StatefulWidget {
+  final String title;
+  final String subtitle;
+  final Color color;
+  final Color textColor;
+  final IconData icon;
+  final ValueSetter<String> onTap;
+
+  DialButton(
+      {this.title,
+      this.subtitle,
+      this.color,
+      this.textColor,
+      this.icon,
+      this.onTap});
+
+  @override
+  _DialButtonState createState() => _DialButtonState();
+}
+
+class _DialButtonState extends State<DialButton>
+    with SingleTickerProviderStateMixin {
+  AnimationController _animationController;
+  Animation _colorTween;
+  Timer _timer;
+
+  @override
+  void initState() {
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    _colorTween = ColorTween(
+            begin: widget.color != null ? widget.color : Colors.white24,
+            end: Colors.white)
+        .animate(_animationController);
+
+    _animationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        // custom code here
+      }
+    });
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _timer.cancel();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
+    var sizeFactor = screenSize.height * 0.09852217;
+
+    return GestureDetector(
+      onTap: () {
+        if (this.widget.onTap != null) this.widget.onTap(widget.title);
+
+        if (_animationController.status == AnimationStatus.completed) {
+          _animationController.reverse();
+        } else {
+          _animationController.forward();
+          _timer = new Timer(const Duration(milliseconds: 200), () {
+            setState(() {
+              _animationController.reverse();
+            });
+          });
+        }
+      },
+      child: ClipOval(
+          child: AnimatedBuilder(
+              animation: _colorTween,
+              builder: (context, child) => Container(
+                    color: _colorTween.value,
+                    height: sizeFactor, // height of the button
+                    width: sizeFactor, // width of the button
+                    child: Center(
+                        child: widget.icon == null
+                            ? widget.subtitle != null
+                                ? Column(
+                                    children: <Widget>[
+                                      Padding(
+                                          padding: EdgeInsets.only(top: 8),
+                                          child: Text(
+                                            widget.title,
+                                            style: TextStyle(
+                                                fontSize: sizeFactor / 2,
+                                                color: widget.textColor != null
+                                                    ? widget.textColor
+                                                    : Colors.white),
+                                          )),
+                                      Text(widget.subtitle,
+                                          style: TextStyle(
+                                              color: widget.textColor != null
+                                                  ? widget.textColor
+                                                  : Colors.white))
+                                    ],
+                                  )
+                                : Padding(
+                                    padding: EdgeInsets.only(top: 8),
+                                    child: Text(
+                                      widget.title,
+                                      style: TextStyle(
+                                          fontSize: widget.title == "*" &&
+                                                  widget.subtitle == null
+                                              ? screenSize.height * 0.0862069
+                                              : sizeFactor / 2,
+                                          color: widget.textColor != null
+                                              ? widget.textColor
+                                              : Colors.white),
+                                    ))
+                            : Icon(widget.icon,
+                                size: sizeFactor / 2, color: Colors.white)),
+                  ))),
     );
   }
 }
