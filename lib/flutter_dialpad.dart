@@ -130,17 +130,12 @@ class _DialPadState extends State<DialPad> {
               ),
               Expanded(
                 child: Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      widget.makeCall(textEditingController.text);
+                  child: DialButton(
+                    icon: Icons.phone,
+                    color: Colors.green,
+                    onTap: (value) {
+                      widget.makeCall(_value);
                     },
-                    child: DialButton(
-                      icon: Icons.phone,
-                      color: Colors.green,
-                      onTap: (value) {
-
-                      },
-                    ),
                   ),
                 ),
               ),

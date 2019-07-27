@@ -1,3 +1,7 @@
+## [0.0.5] - 2019-07-27
+
+* Fix issue where dial button event is not fired
+
 ## [0.0.4] - 2019-07-27
 
 * Added DTMF Tone and Option to Turn it Off
