@@ -24,6 +24,9 @@ This is a purely Dart widget with no dependency on Android or iOS.
   }
 
 ```
+## Screenshots
+
+![Alt text](screenshots/screenshot1.png?raw=true "iOS Screenshot") ![Alt text](screenshots/screenshot2.png?raw=true "Android Screeshot")
 
 ## To Do
 * Add DTMF Tones
