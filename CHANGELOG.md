@@ -1,3 +1,7 @@
+## [0.0.6+1] - 2019-07-28
+
+* Make Textfield for output readonly
+
 ## [0.0.6] - 2019-07-28
 
 * Added Option to not animate dial button onTap
