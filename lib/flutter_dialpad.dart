@@ -30,7 +30,6 @@ class DialPad extends StatefulWidget {
 }
 
 class _DialPadState extends State<DialPad> {
-
   MaskedTextController textEditingController;
   var _value = "";
   var mainTitle = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "*", "0", "＃"];
@@ -51,15 +50,13 @@ class _DialPadState extends State<DialPad> {
 
   @override
   void initState() {
-
     textEditingController = MaskedTextController(
         mask: widget.outputMask != null ? widget.outputMask : '(000) 000-0000');
     super.initState();
   }
 
   _setText(String value) async {
-
-    if(widget.enableDtmf == null || widget.enableDtmf)
+    if (widget.enableDtmf == null || widget.enableDtmf)
       FlutterDtmf.playTone(digits: value);
 
     setState(() {
@@ -102,7 +99,6 @@ class _DialPadState extends State<DialPad> {
 
   @override
   Widget build(BuildContext context) {
-
     var screenSize = MediaQuery.of(context).size;
     var sizeFactor = screenSize.height * 0.09852217;
 
@@ -141,7 +137,8 @@ class _DialPadState extends State<DialPad> {
               ),
               Expanded(
                 child: Padding(
-                  padding: EdgeInsets.only(right: screenSize.height * 0.03685504),
+                  padding:
+                      EdgeInsets.only(right: screenSize.height * 0.03685504),
                   child: IconButton(
                     icon: Icon(
                       Icons.backspace,
@@ -174,19 +171,24 @@ class _DialPadState extends State<DialPad> {
 }
 
 class DialButton extends StatefulWidget {
+  final Key key;
   final String title;
   final String subtitle;
   final Color color;
   final Color textColor;
   final IconData icon;
+  final Color iconColor;
   final ValueSetter<String> onTap;
-
+  final bool shouldAnimate;
   DialButton(
-      {this.title,
+      {this.key,
+      this.title,
       this.subtitle,
       this.color,
       this.textColor,
       this.icon,
+      this.iconColor,
+      this.shouldAnimate,
       this.onTap});
 
   @override
@@ -208,19 +210,13 @@ class _DialButtonState extends State<DialButton>
             end: Colors.white)
         .animate(_animationController);
 
-    _animationController.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        // custom code here
-      }
-    });
-
     super.initState();
   }
 
   @override
   void dispose() {
     super.dispose();
-    _timer.cancel();
+    if (widget.shouldAnimate == null || widget.shouldAnimate) _timer.cancel();
   }
 
   @override
@@ -232,15 +228,17 @@ class _DialButtonState extends State<DialButton>
       onTap: () {
         if (this.widget.onTap != null) this.widget.onTap(widget.title);
 
-        if (_animationController.status == AnimationStatus.completed) {
-          _animationController.reverse();
-        } else {
-          _animationController.forward();
-          _timer = new Timer(const Duration(milliseconds: 200), () {
-            setState(() {
-              _animationController.reverse();
+        if (widget.shouldAnimate == null || widget.shouldAnimate) {
+          if (_animationController.status == AnimationStatus.completed) {
+            _animationController.reverse();
+          } else {
+            _animationController.forward();
+            _timer = Timer(const Duration(milliseconds: 200), () {
+              setState(() {
+                _animationController.reverse();
+              });
             });
-          });
+          }
         }
       },
       child: ClipOval(
@@ -286,7 +284,7 @@ class _DialButtonState extends State<DialButton>
                                               : Colors.white),
                                     ))
                             : Icon(widget.icon,
-                                size: sizeFactor / 2, color: Colors.white)),
+                                size: sizeFactor / 2, color: widget.iconColor != null ? widget.iconColor : Colors.white)),
                   ))),
     );
   }

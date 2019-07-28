@@ -1,3 +1,7 @@
+## [0.0.6] - 2019-07-28
+
+* Added Option to not animate dial button onTap
+
 ## [0.0.5] - 2019-07-27
 
 * Fix issue where dial button event is not fired
