@@ -1,3 +1,7 @@
+## [0.0.6+2] - 2020-03-19
+
+* Dependencies Update
+
 ## [0.0.6+1] - 2019-07-28
 
 * Make Textfield for output readonly
