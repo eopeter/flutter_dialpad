@@ -1,3 +1,7 @@
+## [0.0.6+3] - 2020-04-19
+
+* Updated Example
+
 ## [0.0.6+2] - 2020-03-19
 
 * Dependencies Update
