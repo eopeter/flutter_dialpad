@@ -2,18 +2,18 @@ library flutter_dialpad;
 
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_masked_text/flutter_masked_text.dart';
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:flutter_dtmf/flutter_dtmf.dart';
 
 class DialPad extends StatefulWidget {
-  final ValueSetter<String> makeCall;
-  final Color buttonColor;
-  final Color buttonTextColor;
-  final Color dialButtonColor;
-  final Color dialButtonIconColor;
-  final Color backspaceButtonIconColor;
-  final String outputMask;
-  final bool enableDtmf;
+  final ValueSetter<String>? makeCall;
+  final Color? buttonColor;
+  final Color? buttonTextColor;
+  final Color? dialButtonColor;
+  final Color? dialButtonIconColor;
+  final Color? backspaceButtonIconColor;
+  final String? outputMask;
+  final bool? enableDtmf;
 
   DialPad(
       {this.makeCall,
@@ -30,7 +30,7 @@ class DialPad extends StatefulWidget {
 }
 
 class _DialPadState extends State<DialPad> {
-  MaskedTextController textEditingController;
+  MaskedTextController? textEditingController;
   var _value = "";
   var mainTitle = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "*", "0", "＃"];
   var subTitle = [
@@ -55,19 +55,19 @@ class _DialPadState extends State<DialPad> {
     super.initState();
   }
 
-  _setText(String value) async {
-    if (widget.enableDtmf == null || widget.enableDtmf)
-      FlutterDtmf.playTone(digits: value);
+  _setText(String? value) async {
+    if (widget.enableDtmf == null || widget.enableDtmf!)
+      FlutterDtmf.playTone(digits: value!);
 
     setState(() {
-      _value += value;
-      textEditingController.text = _value;
+      _value += value!;
+      textEditingController!.text = _value;
     });
   }
 
   List<Widget> _getDialerButtons() {
-    var rows = List<Widget>();
-    var items = List<Widget>();
+    var rows = <Widget>[];
+    var items = <Widget>[];
 
     for (var i = 0; i < mainTitle.length; i++) {
       if (i % 3 == 0 && i > 0) {
@@ -76,7 +76,7 @@ class _DialPadState extends State<DialPad> {
         rows.add(SizedBox(
           height: 12,
         ));
-        items = List<Widget>();
+        items = <Widget>[];
       }
 
       items.add(DialButton(
@@ -131,7 +131,7 @@ class _DialPadState extends State<DialPad> {
                     icon: Icons.phone,
                     color: Colors.green,
                     onTap: (value) {
-                      widget.makeCall(_value);
+                      widget.makeCall!(_value);
                     },
                   ),
                 ),
@@ -156,7 +156,7 @@ class _DialPadState extends State<DialPad> {
                             if (_value != null && _value.length > 0) {
                               setState(() {
                                 _value = _value.substring(0, _value.length - 1);
-                                textEditingController.text = _value;
+                                textEditingController!.text = _value;
                               });
                             }
                           },
@@ -172,15 +172,15 @@ class _DialPadState extends State<DialPad> {
 }
 
 class DialButton extends StatefulWidget {
-  final Key key;
-  final String title;
-  final String subtitle;
-  final Color color;
-  final Color textColor;
-  final IconData icon;
-  final Color iconColor;
-  final ValueSetter<String> onTap;
-  final bool shouldAnimate;
+  final Key? key;
+  final String? title;
+  final String? subtitle;
+  final Color? color;
+  final Color? textColor;
+  final IconData? icon;
+  final Color? iconColor;
+  final ValueSetter<String?>? onTap;
+  final bool? shouldAnimate;
   DialButton(
       {this.key,
       this.title,
@@ -198,9 +198,9 @@ class DialButton extends StatefulWidget {
 
 class _DialButtonState extends State<DialButton>
     with SingleTickerProviderStateMixin {
-  AnimationController _animationController;
-  Animation _colorTween;
-  Timer _timer;
+  late AnimationController _animationController;
+  late Animation _colorTween;
+  late Timer _timer;
 
   @override
   void initState() {
@@ -217,7 +217,7 @@ class _DialButtonState extends State<DialButton>
   @override
   void dispose() {
     super.dispose();
-    if (widget.shouldAnimate == null || widget.shouldAnimate) _timer.cancel();
+    if (widget.shouldAnimate == null || widget.shouldAnimate!) _timer.cancel();
   }
 
   @override
@@ -227,9 +227,9 @@ class _DialButtonState extends State<DialButton>
 
     return GestureDetector(
       onTap: () {
-        if (this.widget.onTap != null) this.widget.onTap(widget.title);
+        if (this.widget.onTap != null) this.widget.onTap!(widget.title);
 
-        if (widget.shouldAnimate == null || widget.shouldAnimate) {
+        if (widget.shouldAnimate == null || widget.shouldAnimate!) {
           if (_animationController.status == AnimationStatus.completed) {
             _animationController.reverse();
           } else {
@@ -257,14 +257,14 @@ class _DialButtonState extends State<DialButton>
                                       Padding(
                                           padding: EdgeInsets.only(top: 8),
                                           child: Text(
-                                            widget.title,
+                                            widget.title!,
                                             style: TextStyle(
                                                 fontSize: sizeFactor / 2,
                                                 color: widget.textColor != null
                                                     ? widget.textColor
                                                     : Colors.white),
                                           )),
-                                      Text(widget.subtitle,
+                                      Text(widget.subtitle!,
                                           style: TextStyle(
                                               color: widget.textColor != null
                                                   ? widget.textColor
@@ -274,7 +274,7 @@ class _DialButtonState extends State<DialButton>
                                 : Padding(
                                     padding: EdgeInsets.only(top: 8),
                                     child: Text(
-                                      widget.title,
+                                      widget.title!,
                                       style: TextStyle(
                                           fontSize: widget.title == "*" &&
                                                   widget.subtitle == null

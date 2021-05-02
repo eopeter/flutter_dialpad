@@ -1,3 +1,7 @@
+## [1.0.1] - 2021-05-01
+
+* Migrate to Null Safety
+
 ## [1.0.0] - 2020-04-19
 
 * Updated Example
