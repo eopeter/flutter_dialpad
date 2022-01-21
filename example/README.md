@@ -28,3 +28,4 @@ This is a purely Dart widget with no dependency on Android or iOS except for the
 
 ## To Do
 [Done] Add DTMF Tones
+Support Localization

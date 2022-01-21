@@ -3,15 +3,18 @@ library flutter_dialpad;
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
-import 'package:flutter_dtmf/flutter_dtmf.dart';
+import 'package:flutter_dtmf/dtmf.dart';
 
 class DialPad extends StatefulWidget {
   final ValueSetter<String>? makeCall;
+  // buttonColor is the color of the button on the dial pad. defaults to Colors.gray
   final Color? buttonColor;
   final Color? buttonTextColor;
   final Color? dialButtonColor;
   final Color? dialButtonIconColor;
   final Color? backspaceButtonIconColor;
+  final Color? dialOutputTextColor;
+  // outputMask is the mask applied to the output text. Defaults to (000) 000-0000
   final String? outputMask;
   final bool? enableDtmf;
 
@@ -22,6 +25,7 @@ class DialPad extends StatefulWidget {
       this.buttonTextColor,
       this.dialButtonColor,
       this.dialButtonIconColor,
+      this.dialOutputTextColor,
       this.backspaceButtonIconColor,
       this.enableDtmf});
 
@@ -56,8 +60,8 @@ class _DialPadState extends State<DialPad> {
   }
 
   _setText(String? value) async {
-    if (widget.enableDtmf == null || widget.enableDtmf!)
-      FlutterDtmf.playTone(digits: value!);
+    if ((widget.enableDtmf == null || widget.enableDtmf!) && value != null)
+      Dtmf.playTone(digits: value.trim(), samplingRate: 8000, durationMs: 160);
 
     setState(() {
       _value += value!;
@@ -109,7 +113,9 @@ class _DialPadState extends State<DialPad> {
             padding: EdgeInsets.all(20),
             child: TextFormField(
               readOnly: true,
-              style: TextStyle(color: Colors.white, fontSize: sizeFactor / 2),
+              style: TextStyle(
+                  color: widget.dialOutputTextColor ?? Colors.black,
+                  fontSize: sizeFactor / 2),
               textAlign: TextAlign.center,
               decoration: InputDecoration(border: InputBorder.none),
               controller: textEditingController,
@@ -153,7 +159,7 @@ class _DialPadState extends State<DialPad> {
                     onPressed: _value.length == 0
                         ? null
                         : () {
-                            if (_value != null && _value.length > 0) {
+                            if (_value.length > 0) {
                               setState(() {
                                 _value = _value.substring(0, _value.length - 1);
                                 textEditingController!.text = _value;
@@ -200,7 +206,7 @@ class _DialButtonState extends State<DialButton>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation _colorTween;
-  late Timer _timer;
+  Timer? _timer;
 
   @override
   void initState() {
@@ -217,7 +223,8 @@ class _DialButtonState extends State<DialButton>
   @override
   void dispose() {
     super.dispose();
-    if (widget.shouldAnimate == null || widget.shouldAnimate!) _timer.cancel();
+    if ((widget.shouldAnimate == null || widget.shouldAnimate!) &&
+        _timer != null) _timer!.cancel();
   }
 
   @override
@@ -253,26 +260,29 @@ class _DialButtonState extends State<DialButton>
                         child: widget.icon == null
                             ? widget.subtitle != null
                                 ? Column(
+                                    mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
-                                      Padding(
-                                          padding: EdgeInsets.only(top: 8),
-                                          child: Text(
-                                            widget.title!,
-                                            style: TextStyle(
-                                                fontSize: sizeFactor / 2,
-                                                color: widget.textColor != null
-                                                    ? widget.textColor
-                                                    : Colors.white),
-                                          )),
+                                      SizedBox(
+                                        height: 8,
+                                      ),
+                                      Text(
+                                        widget.title!,
+                                        style: TextStyle(
+                                            fontSize: sizeFactor / 2,
+                                            color: widget.textColor != null
+                                                ? widget.textColor
+                                                : Colors.black),
+                                      ),
                                       Text(widget.subtitle!,
                                           style: TextStyle(
                                               color: widget.textColor != null
                                                   ? widget.textColor
-                                                  : Colors.white))
+                                                  : Colors.black))
                                     ],
                                   )
                                 : Padding(
-                                    padding: EdgeInsets.only(top: 8),
+                                    padding: EdgeInsets.only(
+                                        top: widget.title == "*" ? 10 : 0),
                                     child: Text(
                                       widget.title!,
                                       style: TextStyle(
@@ -282,10 +292,13 @@ class _DialButtonState extends State<DialButton>
                                               : sizeFactor / 2,
                                           color: widget.textColor != null
                                               ? widget.textColor
-                                              : Colors.white),
+                                              : Colors.black),
                                     ))
                             : Icon(widget.icon,
-                                size: sizeFactor / 2, color: widget.iconColor != null ? widget.iconColor : Colors.white)),
+                                size: sizeFactor / 2,
+                                color: widget.iconColor != null
+                                    ? widget.iconColor
+                                    : Colors.white)),
                   ))),
     );
   }

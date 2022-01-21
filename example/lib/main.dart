@@ -23,8 +23,10 @@ class _MyAppState extends State<MyApp> {
             child:
             DialPad(
                 enableDtmf: true,
-                outputMask: "(000) 000-0000",
+                //outputMask: "(000) 000-0000",
                 backspaceButtonIconColor: Colors.red,
+                buttonTextColor: Colors.white,
+                dialOutputTextColor: Colors.white,
                 makeCall: (number){
                   print(number);
                 }
