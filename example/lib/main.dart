@@ -27,6 +27,9 @@ class _MyAppState extends State<MyApp> {
                 backspaceButtonIconColor: Colors.red,
                 buttonTextColor: Colors.white,
                 dialOutputTextColor: Colors.white,
+                keyPressed: (value){
+                  print('$value was pressed');
+                },
                 makeCall: (number){
                   print(number);
                 }

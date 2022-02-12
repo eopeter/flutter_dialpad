@@ -7,11 +7,14 @@ import 'package:flutter_dtmf/dtmf.dart';
 
 class DialPad extends StatefulWidget {
   final ValueSetter<String>? makeCall;
+  final ValueSetter<String>? keyPressed;
+  final bool? hideDialButton;
   // buttonColor is the color of the button on the dial pad. defaults to Colors.gray
   final Color? buttonColor;
   final Color? buttonTextColor;
   final Color? dialButtonColor;
   final Color? dialButtonIconColor;
+  final IconData? dialButtonIcon;
   final Color? backspaceButtonIconColor;
   final Color? dialOutputTextColor;
   // outputMask is the mask applied to the output text. Defaults to (000) 000-0000
@@ -20,11 +23,14 @@ class DialPad extends StatefulWidget {
 
   DialPad(
       {this.makeCall,
+      this.keyPressed,
+      this.hideDialButton,
       this.outputMask,
       this.buttonColor,
       this.buttonTextColor,
       this.dialButtonColor,
       this.dialButtonIconColor,
+      this.dialButtonIcon,
       this.dialOutputTextColor,
       this.backspaceButtonIconColor,
       this.enableDtmf});
@@ -62,6 +68,8 @@ class _DialPadState extends State<DialPad> {
   _setText(String? value) async {
     if ((widget.enableDtmf == null || widget.enableDtmf!) && value != null)
       Dtmf.playTone(digits: value.trim(), samplingRate: 8000, durationMs: 160);
+
+    if (widget.keyPressed != null) widget.keyPressed!(value!);
 
     setState(() {
       _value += value!;
@@ -132,15 +140,17 @@ class _DialPadState extends State<DialPad> {
                 child: Container(),
               ),
               Expanded(
-                child: Center(
-                  child: DialButton(
-                    icon: Icons.phone,
-                    color: Colors.green,
-                    onTap: (value) {
-                      widget.makeCall!(_value);
-                    },
-                  ),
-                ),
+                child: widget.hideDialButton != null && widget.hideDialButton!
+                    ? Container()
+                    : Center(
+                        child: DialButton(
+                          icon: widget.dialButtonIcon != null ? widget.dialButtonIcon : Icons.phone,
+                          color: widget.dialButtonColor != null ? widget.dialButtonColor! : Colors.green,
+                          onTap: (value) {
+                            widget.makeCall!(_value);
+                          },
+                        ),
+                      ),
               ),
               Expanded(
                 child: Padding(
