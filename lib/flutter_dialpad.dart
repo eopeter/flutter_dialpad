@@ -232,6 +232,7 @@ class _DialButtonState extends State<DialButton>
 
   @override
   void dispose() {
+    _animationController.dispose();
     super.dispose();
     if ((widget.shouldAnimate == null || widget.shouldAnimate!) &&
         _timer != null) _timer!.cancel();
