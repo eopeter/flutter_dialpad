@@ -9,7 +9,7 @@ class DialPad extends StatefulWidget {
   final ValueSetter<String>? makeCall;
   final ValueSetter<String>? keyPressed;
   final bool? hideDialButton;
-  final bool? hideSubtitle;
+  final bool? hideDialButton;
   // buttonColor is the color of the button on the dial pad. defaults to Colors.gray
   final Color? buttonColor;
   final Color? buttonTextColor;
@@ -25,8 +25,8 @@ class DialPad extends StatefulWidget {
   DialPad(
       {this.makeCall,
       this.keyPressed,
-      this.hideDialButton,
       this.hideSubtitle = false,
+      this.hideDialButton,
       this.outputMask,
       this.buttonColor,
       this.buttonTextColor,
@@ -45,12 +45,25 @@ class _DialPadState extends State<DialPad> {
   MaskedTextController? textEditingController;
   var _value = "";
   var mainTitle = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "*", "0", "＃"];
-  var subTitle = ["", "ABC", "DEF", "GHI", "JKL", "MNO", "PQRS", "TUV", "WXYZ", null, "+", null];
+  var subTitle = [
+    "",
+    "ABC",
+    "DEF",
+    "GHI",
+    "JKL",
+    "MNO",
+    "PQRS",
+    "TUV",
+    "WXYZ",
+    null,
+    "+",
+    null
+  ];
 
   @override
   void initState() {
-    textEditingController =
-        MaskedTextController(mask: widget.outputMask != null ? widget.outputMask : '(000) 000-0000');
+    textEditingController = MaskedTextController(
+        mask: widget.outputMask != null ? widget.outputMask : '(000) 000-0000');
     super.initState();
   }
 
@@ -72,7 +85,8 @@ class _DialPadState extends State<DialPad> {
 
     for (var i = 0; i < mainTitle.length; i++) {
       if (i % 3 == 0 && i > 0) {
-        rows.add(Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: items));
+        rows.add(Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: items));
         rows.add(SizedBox(
           height: 12,
         ));
@@ -89,7 +103,8 @@ class _DialPadState extends State<DialPad> {
       ));
     }
     //To Do: Fix this workaround for last row
-    rows.add(Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: items));
+    rows.add(
+        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: items));
     rows.add(SizedBox(
       height: 12,
     ));
@@ -109,7 +124,9 @@ class _DialPadState extends State<DialPad> {
             padding: EdgeInsets.all(20),
             child: TextFormField(
               readOnly: true,
-              style: TextStyle(color: widget.dialOutputTextColor ?? Colors.black, fontSize: sizeFactor / 2),
+              style: TextStyle(
+                  color: widget.dialOutputTextColor ?? Colors.black,
+                  fontSize: sizeFactor / 2),
               textAlign: TextAlign.center,
               decoration: InputDecoration(border: InputBorder.none),
               controller: textEditingController,
@@ -141,13 +158,16 @@ class _DialPadState extends State<DialPad> {
               ),
               Expanded(
                 child: Padding(
-                  padding: EdgeInsets.only(right: screenSize.height * 0.03685504),
+                  padding:
+                      EdgeInsets.only(right: screenSize.height * 0.03685504),
                   child: IconButton(
                     icon: Icon(
                       Icons.backspace,
                       size: sizeFactor / 2,
                       color: _value.length > 0
-                          ? (widget.backspaceButtonIconColor != null ? widget.backspaceButtonIconColor : Colors.white24)
+                          ? (widget.backspaceButtonIconColor != null
+                              ? widget.backspaceButtonIconColor
+                              : Colors.white24)
                           : Colors.white24,
                     ),
                     onPressed: _value.length == 0
@@ -198,15 +218,19 @@ class DialButton extends StatefulWidget {
   _DialButtonState createState() => _DialButtonState();
 }
 
-class _DialButtonState extends State<DialButton> with SingleTickerProviderStateMixin {
+class _DialButtonState extends State<DialButton>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation _colorTween;
   Timer? _timer;
 
   @override
   void initState() {
-    _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
-    _colorTween = ColorTween(begin: widget.color != null ? widget.color : Colors.white24, end: Colors.white)
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    _colorTween = ColorTween(
+            begin: widget.color != null ? widget.color : Colors.white24,
+            end: Colors.white)
         .animate(_animationController);
 
     super.initState();
@@ -216,7 +240,8 @@ class _DialButtonState extends State<DialButton> with SingleTickerProviderStateM
   void dispose() {
     _animationController.dispose();
     super.dispose();
-    if ((widget.shouldAnimate == null || widget.shouldAnimate!) && _timer != null) _timer!.cancel();
+    if ((widget.shouldAnimate == null || widget.shouldAnimate!) &&
+        _timer != null) _timer!.cancel();
   }
 
   @override
@@ -261,27 +286,37 @@ class _DialButtonState extends State<DialButton> with SingleTickerProviderStateM
                                         widget.title!,
                                         style: TextStyle(
                                             fontSize: sizeFactor / 2,
-                                            color: widget.textColor != null ? widget.textColor : Colors.black),
+                                            color: widget.textColor != null
+                                                ? widget.textColor
+                                                : Colors.black),
                                       ),
                                       if (!widget.hideSubtitle)
-                                        Text(widget.subtitle!,
-                                            style: TextStyle(
-                                                color: widget.textColor != null ? widget.textColor : Colors.black))
+                                      Text(widget.subtitle!,
+                                          style: TextStyle(
+                                              color: widget.textColor != null
+                                                  ? widget.textColor
+                                                  : Colors.black))
                                     ],
                                   )
                                 : Padding(
-                                    padding: EdgeInsets.only(top: widget.title == "*" ? 10 : 0),
+                                    padding: EdgeInsets.only(
+                                        top: widget.title == "*" ? 10 : 0),
                                     child: Text(
                                       widget.title!,
                                       style: TextStyle(
-                                          fontSize: widget.title == "*" && widget.subtitle == null
+                                          fontSize: widget.title == "*" &&
+                                                  widget.subtitle == null
                                               ? screenSize.height * 0.0862069
                                               : sizeFactor / 2,
-                                          color: widget.textColor != null ? widget.textColor : Colors.black),
+                                          color: widget.textColor != null
+                                              ? widget.textColor
+                                              : Colors.black),
                                     ))
                             : Icon(widget.icon,
                                 size: sizeFactor / 2,
-                                color: widget.iconColor != null ? widget.iconColor : Colors.white)),
+                                color: widget.iconColor != null
+                                    ? widget.iconColor
+                                    : Colors.white)),
                   ))),
     );
   }
