@@ -206,7 +206,7 @@ class DialButton extends StatefulWidget {
       {this.key,
       this.title,
       this.subtitle,
-      required this.hideSubtitle,
+      this.hideSubtitle = false,
       this.color,
       this.textColor,
       this.icon,
