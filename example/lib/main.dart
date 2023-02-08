@@ -21,6 +21,7 @@ class _MyAppState extends State<MyApp> {
             DialPad(
                 enableDtmf: true,
                 //outputMask: "(000) 000-0000",
+                hideSubtitle: false,
                 backspaceButtonIconColor: Colors.red,
                 buttonTextColor: Colors.white,
                 dialOutputTextColor: Colors.white,
