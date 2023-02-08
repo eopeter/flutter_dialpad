@@ -1,3 +1,6 @@
+## [1.0.5] - 2023-02-08
+* Add ability to hide DialButton subtitle text
+
 ## [1.0.4] - 2022-02-21
 * Crash Fix
 
