@@ -9,6 +9,7 @@ class DialPad extends StatefulWidget {
   final ValueSetter<String>? makeCall;
   final ValueSetter<String>? keyPressed;
   final bool? hideDialButton;
+  final bool? hideSubtitle;
   // buttonColor is the color of the button on the dial pad. defaults to Colors.gray
   final Color? buttonColor;
   final Color? buttonTextColor;
@@ -25,6 +26,7 @@ class DialPad extends StatefulWidget {
       {this.makeCall,
       this.keyPressed,
       this.hideDialButton,
+      this.hideSubtitle = false,
       this.outputMask,
       this.buttonColor,
       this.buttonTextColor,
@@ -94,6 +96,7 @@ class _DialPadState extends State<DialPad> {
       items.add(DialButton(
         title: mainTitle[i],
         subtitle: subTitle[i],
+        hideSubtitle: widget.hideSubtitle!,
         color: widget.buttonColor,
         textColor: widget.buttonTextColor,
         onTap: _setText,
@@ -146,6 +149,7 @@ class _DialPadState extends State<DialPad> {
                         child: DialButton(
                           icon: widget.dialButtonIcon != null ? widget.dialButtonIcon : Icons.phone,
                           color: widget.dialButtonColor != null ? widget.dialButtonColor! : Colors.green,
+                          hideSubtitle: widget.hideSubtitle!,
                           onTap: (value) {
                             widget.makeCall!(_value);
                           },
@@ -191,6 +195,7 @@ class DialButton extends StatefulWidget {
   final Key? key;
   final String? title;
   final String? subtitle;
+  final bool hideSubtitle;
   final Color? color;
   final Color? textColor;
   final IconData? icon;
@@ -201,6 +206,7 @@ class DialButton extends StatefulWidget {
       {this.key,
       this.title,
       this.subtitle,
+      this.hideSubtitle = false,
       this.color,
       this.textColor,
       this.icon,
@@ -284,6 +290,7 @@ class _DialButtonState extends State<DialButton>
                                                 ? widget.textColor
                                                 : Colors.black),
                                       ),
+                                      if (!widget.hideSubtitle)
                                       Text(widget.subtitle!,
                                           style: TextStyle(
                                               color: widget.textColor != null
