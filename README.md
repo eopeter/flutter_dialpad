@@ -15,6 +15,7 @@ This is a purely Dart widget with no dependency on Android or iOS except for the
         child:
             DialPad(
                 enableDtmf: true,
+                //hideSubtitle: true,
                 outputMask: "(000) 000-0000",
                 backspaceButtonIconColor: Colors.red,
                 makeCall: (number){
