@@ -2,9 +2,10 @@ library flutter_dialpad;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
-import 'package:flutter_dtmf/dtmf.dart';
 
 import 'src/flutter_dialpad.dart';
+
+export 'src/flutter_dialpad.dart';
 
 class DialPad extends StatefulWidget {
   final ValueSetter<String>? makeCall;
@@ -45,72 +46,12 @@ class DialPad extends StatefulWidget {
 class _DialPadState extends State<DialPad> {
   MaskedTextController? textEditingController;
   var _value = "";
-  var mainTitle = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "*", "0", "＃"];
-  var subTitle = [
-    "",
-    "ABC",
-    "DEF",
-    "GHI",
-    "JKL",
-    "MNO",
-    "PQRS",
-    "TUV",
-    "WXYZ",
-    null,
-    "+",
-    null
-  ];
 
   @override
   void initState() {
     textEditingController = MaskedTextController(
         mask: widget.outputMask != null ? widget.outputMask : '(000) 000-0000');
     super.initState();
-  }
-
-  _setText(String? value) async {
-    if ((widget.enableDtmf == null || widget.enableDtmf!) && value != null)
-      Dtmf.playTone(digits: value.trim(), samplingRate: 8000, durationMs: 160);
-
-    if (widget.keyPressed != null) widget.keyPressed!(value!);
-
-    setState(() {
-      _value += value!;
-      textEditingController!.text = _value;
-    });
-  }
-
-  List<Widget> _getDialerButtons() {
-    var rows = <Widget>[];
-    var items = <Widget>[];
-
-    for (var i = 0; i < mainTitle.length; i++) {
-      if (i % 3 == 0 && i > 0) {
-        rows.add(Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: items));
-        rows.add(SizedBox(
-          height: 12,
-        ));
-        items = <Widget>[];
-      }
-
-      items.add(DialButton(
-        title: mainTitle[i],
-        subtitle: subTitle[i],
-        hideSubtitle: widget.hideSubtitle!,
-        color: widget.buttonColor != null ? widget.buttonColor! : Colors.grey,
-        textColor: widget.buttonTextColor != null ? widget.buttonTextColor! : Colors.black,
-        onTap: _setText,
-      ));
-    }
-    //To Do: Fix this workaround for last row
-    rows.add(
-        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: items));
-    rows.add(SizedBox(
-      height: 12,
-    ));
-
-    return rows;
   }
 
   /// Handles keypad button press, this includes numbers and [DialActionKey] except [DialActionKey.backspace]
@@ -133,6 +74,13 @@ class _DialPadState extends State<DialPad> {
       _value = _value.substring(0, _value.length - 1);
       textEditingController!.text = _value;
     });
+  }
+
+  /// Handles dial button press
+  void _onDialPressed() {
+    if (widget.makeCall != null && _value.isNotEmpty) {
+      widget.makeCall!(_value);
+    }
   }
 
   /// Handles keyboard button presses
@@ -169,6 +117,38 @@ class _DialPadState extends State<DialPad> {
     final _dialButtonBuilder = /*widget.buttonBuilder ?? */_defaultDialButtonBuilder;
     final _generator = PhoneKeypadGenerator();
 
+    /// Dial button
+    final dialButton = ActionButton(
+      padding: const EdgeInsets.all(12),
+      buttonType: ButtonType.circle,
+      icon: widget.dialButtonIcon ?? Icons.phone,
+      iconColor: widget.dialButtonIconColor ?? Colors.white,
+      color: widget.dialButtonColor ?? Colors.green,
+      onTap: _onDialPressed,
+      disabled: _value.isEmpty,
+    );
+
+    /// Backspace button
+    final backspaceButton = ActionButton(
+      onTap: _onBackspacePressed,
+      disabled: _value.isEmpty,
+      buttonType: ButtonType.circle,
+      iconSize: 75,
+      iconColor: widget.backspaceButtonIconColor ?? Colors.grey,
+      padding: const EdgeInsets.all(12),
+      icon: Icons.backspace,
+      color: Colors.transparent,
+    );
+
+    /// Footer contains the dial and backspace buttons
+    final footer = Row(
+      children: [
+        Expanded(child: Container()),
+        Expanded(child: dialButton),
+        Expanded(child: backspaceButton),
+      ],
+    );
+
     return KeypadFocusNode(
       onKeypadPressed: _onKeypadPressed,
       child: Center(
@@ -194,53 +174,9 @@ class _DialPadState extends State<DialPad> {
                   final hint = _generator.hint(index);
                   return _dialButtonBuilder(context, index, key, altKey, hint);
                 },
+                footer: footer,
               ),
             ),
-            SizedBox(
-              height: 15,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Expanded(
-                  child: Container(),
-                ),
-                Expanded(
-                  child: widget.hideDialButton != null && widget.hideDialButton!
-                      ? Container()
-                      : Center(
-                          child: DialButton(
-                            icon: widget.dialButtonIcon != null ? widget.dialButtonIcon : Icons.phone,
-                            color: widget.dialButtonColor != null ? widget.dialButtonColor! : Colors.green,
-                            hideSubtitle: widget.hideSubtitle!,
-                            onTap: (value) {
-                              widget.makeCall!(_value);
-                            },
-                          ),
-                        ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding:
-                        EdgeInsets.only(right: screenSize.height * 0.03685504),
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.backspace,
-                        size: sizeFactor / 2,
-                        color: _value.length > 0
-                            ? (widget.backspaceButtonIconColor != null
-                                ? widget.backspaceButtonIconColor
-                                : Colors.white24)
-                            : Colors.white24,
-                      ),
-                      onPressed: _value.length == 0
-                          ? null
-                          : _onBackspacePressed,
-                    ),
-                  ),
-                )
-              ],
-            )
           ],
         ),
       ),
