@@ -62,6 +62,9 @@ class DialPad extends StatefulWidget {
   /// Whether to enable DTMF tones. Defaults to [false]
   final bool enableDtmf;
 
+  /// Generator for the keypad buttons. Defaults to [PhoneKeypadGenerator].
+  final KeypadIndexedGenerator? generator;
+
   /// Button display style (clipping). Defaults to [ButtonType.rectangle].
   final ButtonType buttonType;
 
@@ -89,6 +92,7 @@ class DialPad extends StatefulWidget {
     this.subtitleTextSize = 25,
     this.backspaceButtonIconColor = Colors.grey,
     this.enableDtmf = false,
+    this.generator = const PhoneKeypadGenerator(),
     this.buttonType = ButtonType.rectangle,
     this.buttonPadding = const EdgeInsets.all(0),
     this.textFieldPadding = const EdgeInsets.only(left: 16, right: 16, top: 20, bottom: 16),
@@ -171,7 +175,7 @@ class _DialPadState extends State<DialPad> {
     final sizeFactor = min(screenSize.height, screenSize.width) * 0.001;
 
     final _dialButtonBuilder = /*widget.buttonBuilder ?? */ _defaultDialButtonBuilder;
-    final _generator = PhoneKeypadGenerator();
+    final _generator = widget.generator ?? IosKeypadGenerator();
 
     /// Dial button
     final dialButton = ActionButton(
