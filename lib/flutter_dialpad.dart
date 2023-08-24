@@ -62,6 +62,9 @@ class DialPad extends StatefulWidget {
   /// Whether to enable DTMF tones. Defaults to [false]
   final bool enableDtmf;
 
+  /// Button display style (clipping). Defaults to [ButtonType.rectangle].
+  final ButtonType buttonType;
+
   /// Padding around the button. Defaults to [EdgeInsets.all(0)].
   final EdgeInsets buttonPadding;
 
@@ -86,6 +89,7 @@ class DialPad extends StatefulWidget {
     this.subtitleTextSize = 25,
     this.backspaceButtonIconColor = Colors.grey,
     this.enableDtmf = false,
+    this.buttonType = ButtonType.rectangle,
     this.buttonPadding = const EdgeInsets.all(0),
     this.textFieldPadding = const EdgeInsets.only(left: 16, right: 16, top: 20, bottom: 16),
   });
@@ -151,7 +155,7 @@ class _DialPadState extends State<DialPad> {
       color: widget.buttonColor,
       hideSubtitle: widget.hideSubtitle,
       onTap: _onKeyPressed,
-      buttonType: ButtonType.circle,
+      buttonType: widget.buttonType,
       padding: widget.buttonPadding,
       textColor: widget.buttonTextColor,
       iconColor: widget.buttonTextColor,
@@ -172,7 +176,7 @@ class _DialPadState extends State<DialPad> {
     /// Dial button
     final dialButton = ActionButton(
       padding: widget.buttonPadding,
-      buttonType: ButtonType.circle,
+      buttonType: widget.buttonType,
       icon: widget.dialButtonIcon,
       iconColor: widget.dialButtonIconColor,
       color: widget.dialButtonColor,
@@ -184,7 +188,7 @@ class _DialPadState extends State<DialPad> {
     final backspaceButton = ActionButton(
       onTap: _onBackspacePressed,
       disabled: _value.isEmpty,
-      buttonType: ButtonType.circle,
+      buttonType: widget.buttonType,
       iconSize: 75,
       iconColor: widget.backspaceButtonIconColor,
       padding: widget.buttonPadding,
