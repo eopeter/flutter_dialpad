@@ -1,3 +1,17 @@
+## [1.1.0] - 2023-00-23
+* Add custom keypad `keypad_generator`s with extensibility options.
+* Add `DialButton`with (future release) custom `keypadButtonBuilder` for specific usecases.
+* Refactor Flutter Dialpad with prebuilt UIs (iOS, metro theme styles).
+* Add `hideBackSpace` option.
+* Add `padding` fields for buttons & text input.
+* Changed UI scaling from height-based to width/height (thousand'th) ratio.
+* Add keyboard input (numpad, number row, including various phone keypad symbols & actions), see [DigitKey, ActionKey] keys.
+* Add `callOnEnter` to "place call" on numpad keyboard action.
+* Add clipboard copy from/paste to & copy to clipboard option.
+* Add custom text size fields for dial, button and subtitle text
+* Add `buttonType` button style, for circular-or-rectangle-styles.
+* Update example with prebuilt UIs
+
 ## [1.0.5] - 2023-02-08
 * Add ability to hide DialButton subtitle text
 
