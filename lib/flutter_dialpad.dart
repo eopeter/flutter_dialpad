@@ -151,12 +151,11 @@ class _DialPadState extends State<DialPad> {
         children: <Widget>[
           Padding(
             padding: EdgeInsets.all(20),
-            child: TextFormField(
+            child: PhoneTextField(
               readOnly: true,
-              style: TextStyle(
+              textStyle: TextStyle(
                   color: widget.dialOutputTextColor ?? Colors.black,
                   fontSize: sizeFactor / 2),
-              textAlign: TextAlign.center,
               decoration: InputDecoration(border: InputBorder.none),
               controller: textEditingController,
             ),
