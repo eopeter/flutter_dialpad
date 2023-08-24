@@ -113,10 +113,38 @@ class _DialPadState extends State<DialPad> {
     return rows;
   }
 
+  /// Handles keypad button press, this includes numbers and [DialActionKey] except [DialActionKey.backspace]
+  void _onKeyPressed(String? value) {
+    if (value != null) {
+      setState(() {
+        _value += value;
+        textEditingController?.text = _value;
+      });
+    }
+  }
+
+  Widget _defaultDialButtonBuilder(BuildContext context, int index, KeyValue key, KeyValue? altKey, String? hint) {
+    return DialButton(
+      title: key.value,
+      subtitle: altKey?.value ?? hint,
+      color: widget.buttonColor ?? Colors.grey,
+      hideSubtitle: widget.hideSubtitle ?? false,
+      onTap: _onKeyPressed,
+      buttonType: ButtonType.circle,
+      padding: const EdgeInsets.all(12),
+      textColor: widget.buttonTextColor ?? Colors.black,
+      iconColor: widget.buttonTextColor ?? Colors.black,
+      subtitleIconColor: widget.buttonTextColor,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     var sizeFactor = screenSize.height * 0.09852217;
+
+    final _dialButtonBuilder = /*widget.buttonBuilder ?? */_defaultDialButtonBuilder;
+    final _generator = PhoneKeypadGenerator();
 
     return Center(
       child: Column(
@@ -133,7 +161,17 @@ class _DialPadState extends State<DialPad> {
               controller: textEditingController,
             ),
           ),
-          ..._getDialerButtons(),
+          Expanded(
+            child: KeypadGrid(
+              itemCount: 12,
+              itemBuilder: (context, index) {
+                final key = _generator.get(index);
+                final altKey = _generator.getAlt(index);
+                final hint = _generator.hint(index);
+                return _dialButtonBuilder(context, index, key, altKey, hint);
+              },
+            ),
+          ),
           SizedBox(
             height: 15,
           ),
