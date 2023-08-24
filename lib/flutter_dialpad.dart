@@ -10,6 +10,8 @@ import 'src/flutter_dialpad.dart';
 
 export 'src/flutter_dialpad.dart';
 
+typedef DialPadButtonBuilder = Widget Function(BuildContext context, int index, KeyValue key, KeyValue? altKey, String? hint);
+
 class DialPad extends StatefulWidget {
   /// Callback when the dial button is pressed.
   final ValueSetter<String>? makeCall;
@@ -65,6 +67,10 @@ class DialPad extends StatefulWidget {
   /// Whether to enable DTMF tones. Defaults to [false]
   final bool enableDtmf;
 
+  /// Builder for the keypad buttons. Defaults to [DialPadButtonBuilder].
+  /// Note: this has not yet been fully integrated for customer use - this will be available in a future release.
+  final DialPadButtonBuilder? keypadButtonBuilder;
+
   /// Generator for the keypad buttons. Defaults to [PhoneKeypadGenerator].
   final KeypadIndexedGenerator? generator;
 
@@ -105,6 +111,8 @@ class DialPad extends StatefulWidget {
     this.subtitleTextSize = 25,
     this.backspaceButtonIconColor = Colors.grey,
     this.enableDtmf = false,
+    @Deprecated('This has not yet been fully integrated for customer use and thus has no effect on the output - will be available in a future release.')
+    this.keypadButtonBuilder,
     this.generator = const PhoneKeypadGenerator(),
     this.buttonType = ButtonType.rectangle,
     this.buttonPadding = const EdgeInsets.all(0),
@@ -194,7 +202,7 @@ class _DialPadState extends State<DialPad> {
     final screenSize = MediaQuery.of(context).size;
     final sizeFactor = min(screenSize.height, screenSize.width) * 0.001;
 
-    final _dialButtonBuilder = /*widget.buttonBuilder ?? */ _defaultDialButtonBuilder;
+    final _keypadButtonBuilder = /*widget.keypadButtonBuilder ??  */_defaultDialButtonBuilder;
     final _generator = widget.generator ?? IosKeypadGenerator();
 
     /// Dial button
@@ -260,7 +268,7 @@ class _DialPadState extends State<DialPad> {
                   final key = _generator.get(index);
                   final altKey = _generator.getAlt(index);
                   final hint = _generator.hint(index);
-                  return _dialButtonBuilder(context, index, key, altKey, hint);
+                  return _keypadButtonBuilder(context, index, key, altKey, hint);
                 },
                 footer: footer,
               ),
