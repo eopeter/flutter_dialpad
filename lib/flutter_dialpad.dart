@@ -1,5 +1,7 @@
 library flutter_dialpad;
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 
@@ -24,34 +26,34 @@ class DialPad extends StatefulWidget {
   final String? outputMask;
   final bool? enableDtmf;
 
-  DialPad(
-      {this.makeCall,
-      this.keyPressed,
-      this.hideDialButton,
-      this.hideSubtitle = false,
-      this.outputMask,
-      this.buttonColor,
-      this.buttonTextColor,
-      this.dialButtonColor,
-      this.dialButtonIconColor,
-      this.dialButtonIcon,
-      this.dialOutputTextColor,
-      this.backspaceButtonIconColor,
-      this.enableDtmf});
+  DialPad({
+    this.makeCall,
+    this.keyPressed,
+    this.hideDialButton,
+    this.hideSubtitle = false,
+    this.outputMask,
+    this.buttonColor,
+    this.buttonTextColor,
+    this.dialButtonColor,
+    this.dialButtonIconColor,
+    this.dialButtonIcon,
+    this.dialOutputTextColor,
+    this.backspaceButtonIconColor,
+    this.enableDtmf,
+  });
 
   @override
-  _DialPadState createState() => _DialPadState();
+  State<DialPad> createState() => _DialPadState();
 }
 
 class _DialPadState extends State<DialPad> {
-  MaskedTextController? textEditingController;
-  var _value = "";
+  late final MaskedTextController _controller;
+  String _value = "";
 
   @override
   void initState() {
-    textEditingController = MaskedTextController(
-        mask: widget.outputMask != null ? widget.outputMask : '(000) 000-0000');
     super.initState();
+    _controller = MaskedTextController(mask: widget.outputMask != null ? widget.outputMask : '(000) 000-0000');
   }
 
   /// Handles keypad button press, this includes numbers and [DialActionKey] except [DialActionKey.backspace]
@@ -59,7 +61,7 @@ class _DialPadState extends State<DialPad> {
     if (value != null) {
       setState(() {
         _value += value;
-        textEditingController?.text = _value;
+        _controller.updateText(_value);
       });
     }
   }
@@ -72,7 +74,7 @@ class _DialPadState extends State<DialPad> {
 
     setState(() {
       _value = _value.substring(0, _value.length - 1);
-      textEditingController!.text = _value;
+      _controller.text = _value;
     });
   }
 
@@ -111,10 +113,10 @@ class _DialPadState extends State<DialPad> {
 
   @override
   Widget build(BuildContext context) {
-    var screenSize = MediaQuery.of(context).size;
-    var sizeFactor = screenSize.height * 0.09852217;
+    final screenSize = MediaQuery.of(context).size;
+    final sizeFactor = min(screenSize.height, screenSize.width) * 0.001;
 
-    final _dialButtonBuilder = /*widget.buttonBuilder ?? */_defaultDialButtonBuilder;
+    final _dialButtonBuilder = /*widget.buttonBuilder ?? */ _defaultDialButtonBuilder;
     final _generator = PhoneKeypadGenerator();
 
     /// Dial button
@@ -159,10 +161,11 @@ class _DialPadState extends State<DialPad> {
               child: PhoneTextField(
                 readOnly: true,
                 textStyle: TextStyle(
-                    color: widget.dialOutputTextColor ?? Colors.black,
-                    fontSize: sizeFactor / 2),
+                  color: widget.dialOutputTextColor ?? Colors.black,
+                  fontSize: sizeFactor / 2,
+                ),
                 decoration: InputDecoration(border: InputBorder.none),
-                controller: textEditingController,
+                controller: _controller,
               ),
             ),
             Expanded(
