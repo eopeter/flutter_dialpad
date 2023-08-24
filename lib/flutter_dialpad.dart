@@ -124,6 +124,48 @@ class DialPad extends StatefulWidget {
     this.textFieldPadding = const EdgeInsets.only(left: 16, right: 16, top: 20, bottom: 16),
   });
 
+  /// Returns a [DialPad] with an iOS-style design (i.e. Apple).
+  factory DialPad.ios({
+    ValueSetter<String>? makeCall,
+    ValueSetter<String>? keyPressed,
+  }) {
+    return DialPad(
+      makeCall: makeCall,
+      keyPressed: keyPressed,
+      // Cupertino icons should be used here
+      dialButtonIcon: Icons.phone,
+      backspaceButtonIconColor: Colors.grey,
+      generator: IosKeypadGenerator(),
+      dialOutputTextColor: Colors.black87,
+      buttonTextColor: Colors.black87,
+      buttonColor: Colors.grey[300]!,
+      buttonType: ButtonType.circle,
+      buttonPadding: EdgeInsets.all(16),
+      dialOutputTextSize: 75,
+    );
+  }
+
+  /// Creates a dial pad with a metro-style (i.e. Windows).
+  factory DialPad.metro({
+    ValueSetter<String>? makeCall,
+    ValueSetter<String>? keyPressed,
+  }) {
+    return DialPad(
+      makeCall: makeCall,
+      keyPressed: keyPressed,
+      // Cupertino icons should be used here
+      dialButtonIcon: Icons.phone,
+      backspaceButtonIconColor: Colors.grey,
+      generator: PhoneKeypadGenerator(),
+      dialOutputTextColor: Colors.black87,
+      buttonTextColor: Colors.black54,
+      buttonColor: Colors.white,
+      buttonType: ButtonType.rectangle,
+      dialOutputTextSize: 75,
+      dialButtonColor: Colors.blue,
+    );
+  }
+
   @override
   State<DialPad> createState() => _DialPadState();
 }
