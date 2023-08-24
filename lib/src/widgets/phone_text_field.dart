@@ -16,7 +16,7 @@ class PhoneTextField extends StatelessWidget {
   final ValueChanged<String>? onChanged;
 
   /// The controller for the text field.
-  final TextEditingController? controller;
+  final TextEditingController controller;
 
   /// Whether the text field is read only. Defaults to false.
   final bool readOnly;
@@ -32,7 +32,7 @@ class PhoneTextField extends StatelessWidget {
     this.onChanged,
     this.readOnly = false,
     this.textAlign = TextAlign.center,
-    this.controller,
+    required this.controller,
   });
 
   @override
