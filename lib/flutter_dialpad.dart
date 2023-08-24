@@ -56,7 +56,8 @@ class DialPad extends StatefulWidget {
   final double subtitleTextSize;
 
   /// outputMask is the mask applied to the output text. Defaults to (000) 000-0000
-  final String? outputMask;
+  final String outputMask;
+  final String hint;
 
   /// Whether to enable DTMF tones. Defaults to [false]
   final bool enableDtmf;
@@ -66,7 +67,8 @@ class DialPad extends StatefulWidget {
     this.keyPressed,
     this.hideDialButton = false,
     this.hideSubtitle = false,
-    this.outputMask,
+    this.outputMask = '(000) 000-0000',
+    this.hint = '(000) 000-0000',
     this.buttonColor = Colors.grey,
     this.buttonTextColor = Colors.black,
     this.dialButtonColor = Colors.green,
@@ -91,7 +93,7 @@ class _DialPadState extends State<DialPad> {
   @override
   void initState() {
     super.initState();
-    _controller = MaskedTextController(mask: widget.outputMask != null ? widget.outputMask : '(000) 000-0000');
+    _controller = MaskedTextController(mask: widget.outputMask);
   }
 
   /// Handles keypad button press, this includes numbers and [DialActionKey] except [DialActionKey.backspace]
@@ -204,7 +206,7 @@ class _DialPadState extends State<DialPad> {
                   color: widget.dialOutputTextColor,
                   fontSize: widget.dialOutputTextSize * sizeFactor,
                 ),
-                decoration: InputDecoration(border: InputBorder.none),
+                decoration: InputDecoration(border: InputBorder.none, hintText: widget.hint),
                 controller: _controller,
               ),
             ),
