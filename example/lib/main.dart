@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dialpad/flutter_dialpad.dart';
+import 'package:flutter_dialpad_example/screens/dialpad_selection.dart';
 
+import 'screens/dialpad_metro.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,30 +14,19 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
-  void _makeCall(String number) {
-    print('calling $number');
-  }
-
-  void _keyPressed(String number) {
-    print(number);
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: SafeArea(
-            child: DialPad(
-              makeCall: _makeCall,
-              keyPressed: _keyPressed,
-              dialButtonColor: Colors.blue,
-              buttonColor: Colors.white,
-              buttonTextColor: Colors.black54,
-            ),
+      theme: ThemeData(
+        iconTheme: IconThemeData(size: 36),
+        textButtonTheme: TextButtonThemeData(
+          style: ButtonStyle(
+            textStyle: MaterialStateProperty.all(TextStyle(fontSize: 20)),
+          ),
         ),
       ),
+      debugShowCheckedModeBanner: false,
+      home: DialPadSelection(),
     );
   }
 }
