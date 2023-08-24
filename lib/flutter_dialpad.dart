@@ -203,7 +203,7 @@ class _DialPadState extends State<DialPad> {
                 },
                 footer: footer,
               ),
-            ),
+            )
           ],
         ),
       ),
