@@ -15,6 +15,9 @@ class PhoneTextField extends StatelessWidget {
   /// Callback when the text field is changed.
   final ValueChanged<String>? onChanged;
 
+  /// Add copyToClipboard widget to the text field. Defaults to false.
+  final bool copyToClipboard;
+
   /// The controller for the text field.
   final TextEditingController controller;
 
@@ -32,12 +35,17 @@ class PhoneTextField extends StatelessWidget {
     this.onChanged,
     this.readOnly = false,
     this.textAlign = TextAlign.center,
+    this.copyToClipboard = false,
     required this.controller,
   });
 
+  void _onCopyPressed() {
+    Clipboard.setData(ClipboardData(text: controller.text));
+  }
+
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
+    final textField = TextFormField(
       style: textStyle,
       decoration: decoration,
       readOnly: readOnly,
@@ -45,5 +53,16 @@ class PhoneTextField extends StatelessWidget {
       controller: controller,
       onChanged: onChanged,
     );
+
+    if (copyToClipboard) {
+      return Row(
+        children: [
+          Expanded(child: textField),
+          IconButton(icon: Icon(Icons.copy), onPressed: _onCopyPressed),
+        ],
+      );
+    } else {
+      return textField;
+    }
   }
 }

@@ -71,6 +71,12 @@ class DialPad extends StatefulWidget {
   /// Padding around the button. Defaults to [EdgeInsets.all(0)].
   final EdgeInsets buttonPadding;
 
+  /// Whether to copy the text to the clipboard when the text field is tapped. Defaults to true.
+  final bool copyToClipboard;
+
+  /// Whether to paste the text from the clipboard when the text field is tapped. Defaults to true.
+  final bool pasteFromClipboard;
+
   /// Padding around the text field. Defaults to [EdgeInsets.only(left: 16, right: 16, top: 20, bottom: 16)].
   final EdgeInsets textFieldPadding;
 
@@ -95,6 +101,8 @@ class DialPad extends StatefulWidget {
     this.generator = const PhoneKeypadGenerator(),
     this.buttonType = ButtonType.rectangle,
     this.buttonPadding = const EdgeInsets.all(0),
+    this.copyToClipboard = true,
+    this.pasteFromClipboard = true,
     this.textFieldPadding = const EdgeInsets.only(left: 16, right: 16, top: 20, bottom: 16),
   });
 
@@ -217,13 +225,14 @@ class _DialPadState extends State<DialPad> {
             Padding(
               padding: widget.textFieldPadding,
               child: PhoneTextField(
-                readOnly: true,
                 textStyle: TextStyle(
                   color: widget.dialOutputTextColor,
                   fontSize: widget.dialOutputTextSize * sizeFactor,
                 ),
                 decoration: InputDecoration(border: InputBorder.none, hintText: widget.hint),
                 controller: _controller,
+                copyToClipboard: widget.copyToClipboard,
+                readOnly: !widget.pasteFromClipboard,
               ),
             ),
             Expanded(
