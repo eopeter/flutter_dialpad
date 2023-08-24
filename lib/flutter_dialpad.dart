@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:flutter_dtmf/dtmf.dart';
+export 'src/flutter_dialpad.dart';
 
 class DialPad extends StatefulWidget {
   final ValueSetter<String>? makeCall;
