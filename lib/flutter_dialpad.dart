@@ -198,15 +198,17 @@ class _DialPadState extends State<DialPad> {
     final _generator = widget.generator ?? IosKeypadGenerator();
 
     /// Dial button
-    final dialButton = ActionButton(
-      padding: widget.buttonPadding,
-      buttonType: widget.buttonType,
-      icon: widget.dialButtonIcon,
-      iconColor: widget.dialButtonIconColor,
-      color: widget.dialButtonColor,
-      onTap: _onDialPressed,
-      disabled: _value.isEmpty,
-    );
+    final dialButton = widget.hideDialButton
+        ? null
+        : ActionButton(
+            padding: widget.buttonPadding,
+            buttonType: widget.buttonType,
+            icon: widget.dialButtonIcon,
+            iconColor: widget.dialButtonIconColor,
+            color: widget.dialButtonColor,
+            onTap: _onDialPressed,
+            disabled: _value.isEmpty || widget.makeCall == null,
+          );
 
     /// Backspace button
     final backspaceButton = widget.hideBackspaceButton
@@ -223,13 +225,15 @@ class _DialPadState extends State<DialPad> {
           );
 
     /// Footer contains the dial and backspace buttons
-    final footer = Row(
-      children: [
-        Expanded(child: Container()),
-        Expanded(child: dialButton),
-        Expanded(child: backspaceButton),
-      ],
-    );
+    final footer = dialButton == null && backspaceButton == null
+        ? null
+        : Row(
+            children: [
+              Expanded(child: Container()),
+              Expanded(child: dialButton ?? Container()),
+              Expanded(child: backspaceButton ?? Container()),
+            ],
+          );
 
     return KeypadFocusNode(
       onKeypadPressed: _onKeypadPressed,
