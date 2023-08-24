@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
+// disabled temporarily
 // import 'package:flutter_dtmf/dtmf.dart';
 
 import 'src/flutter_dialpad.dart';
@@ -64,7 +65,8 @@ class DialPad extends StatefulWidget {
   final String outputMask;
   final String hint;
 
-  /// Whether to enable DTMF tones. Defaults to [false]
+  /// Whether to enable DTMF tones. Defaults to [false].
+  /// Disabled temporarily until [flutter_dtmf] has been updated.
   final bool enableDtmf;
 
   /// Builder for the keypad buttons. Defaults to [DialPadButtonBuilder].

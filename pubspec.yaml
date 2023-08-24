@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_dtmf: ^2.0.2
+#  flutter_dtmf: ^2.0.2
   flutter_masked_text2: ^0.9.1
   #auto_size_text: ^2.0.2+1
 
