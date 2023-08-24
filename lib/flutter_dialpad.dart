@@ -71,6 +71,9 @@ class DialPad extends StatefulWidget {
   /// Padding around the button. Defaults to [EdgeInsets.all(0)].
   final EdgeInsets buttonPadding;
 
+  /// Whether to call [makeCall] when the enter key is pressed. Defaults to false.
+  final bool callOnEnter;
+
   /// Whether to copy the text to the clipboard when the text field is tapped. Defaults to true.
   final bool copyToClipboard;
 
@@ -101,6 +104,7 @@ class DialPad extends StatefulWidget {
     this.generator = const PhoneKeypadGenerator(),
     this.buttonType = ButtonType.rectangle,
     this.buttonPadding = const EdgeInsets.all(0),
+    this.callOnEnter = false,
     this.copyToClipboard = true,
     this.pasteFromClipboard = true,
     this.textFieldPadding = const EdgeInsets.only(left: 16, right: 16, top: 20, bottom: 16),
@@ -154,6 +158,10 @@ class _DialPadState extends State<DialPad> {
     if (key is ActionKey && key.action == DialActionKey.backspace) {
       // handle backspace
       _onBackspacePressed();
+    } else if (key is ActionKey && key.action == DialActionKey.enter) {
+      if (widget.callOnEnter) {
+        _onDialPressed();
+      }
     } else {
       // For numbers, and all actions except backspace
       _onKeyPressed(key.value);
