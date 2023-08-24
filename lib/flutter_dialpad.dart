@@ -20,6 +20,9 @@ class DialPad extends StatefulWidget {
   /// Whether to hide the dial button. Defaults to false.
   final bool hideDialButton;
 
+  /// Whether to hide the backspace button. Defaults to false.
+  final bool hideBackspaceButton;
+
   /// Whether to hide the subtitle on the dial pad buttons. Defaults to [false].
   final bool hideSubtitle;
 
@@ -87,6 +90,7 @@ class DialPad extends StatefulWidget {
     this.makeCall,
     this.keyPressed,
     this.hideDialButton = false,
+    this.hideBackspaceButton = false,
     this.hideSubtitle = false,
     this.outputMask = '(000) 000-0000',
     this.hint = '(000) 000-0000',
@@ -205,16 +209,18 @@ class _DialPadState extends State<DialPad> {
     );
 
     /// Backspace button
-    final backspaceButton = ActionButton(
-      onTap: _onBackspacePressed,
-      disabled: _value.isEmpty,
-      buttonType: widget.buttonType,
-      iconSize: 75,
-      iconColor: widget.backspaceButtonIconColor,
-      padding: widget.buttonPadding,
-      icon: Icons.backspace,
-      color: Colors.transparent,
-    );
+    final backspaceButton = widget.hideBackspaceButton
+        ? null
+        : ActionButton(
+            onTap: _onBackspacePressed,
+            disabled: _value.isEmpty,
+            buttonType: widget.buttonType,
+            iconSize: 75,
+            iconColor: widget.backspaceButtonIconColor,
+            padding: widget.buttonPadding,
+            icon: Icons.backspace,
+            color: Colors.transparent,
+          );
 
     /// Footer contains the dial and backspace buttons
     final footer = Row(
