@@ -10,36 +10,59 @@ import 'src/flutter_dialpad.dart';
 export 'src/flutter_dialpad.dart';
 
 class DialPad extends StatefulWidget {
+  /// Callback when the dial button is pressed.
   final ValueSetter<String>? makeCall;
+
+  /// Callback when a key is pressed.
   final ValueSetter<String>? keyPressed;
-  final bool? hideDialButton;
-  final bool? hideSubtitle;
-  // buttonColor is the color of the button on the dial pad. defaults to Colors.gray
-  final Color? buttonColor;
-  final Color? buttonTextColor;
-  final Color? dialButtonColor;
-  final Color? dialButtonIconColor;
-  final IconData? dialButtonIcon;
-  final Color? backspaceButtonIconColor;
-  final Color? dialOutputTextColor;
-  // outputMask is the mask applied to the output text. Defaults to (000) 000-0000
+
+  /// Whether to hide the dial button. Defaults to false.
+  final bool hideDialButton;
+
+  /// Whether to hide the subtitle on the dial pad buttons. Defaults to [false].
+  final bool hideSubtitle;
+
+  /// buttonColor is the color of the button on the dial pad. defaults to [Colors.grey]
+  final Color buttonColor;
+
+  /// Color of the button text, defaults to [Colors.black]
+  final Color buttonTextColor;
+
+  /// Color of the dial button, defaults to [Colors.green]
+  final Color dialButtonColor;
+
+  /// Color of the dial button icon, defaults to [Colors.white]
+  final Color dialButtonIconColor;
+
+  /// Icon for the dial button, defaults to [Icons.phone]
+  final IconData dialButtonIcon;
+
+  /// Color of the backspace button icon, defaults to [Colors.grey]
+  final Color backspaceButtonIconColor;
+
+  /// Color of the output text, defaults to [Colors.black]
+  final Color dialOutputTextColor;
+
+  /// outputMask is the mask applied to the output text. Defaults to ['(000) 000-0000']
   final String? outputMask;
-  final bool? enableDtmf;
+
+  /// Whether to enable DTMF tones. Defaults to [false]
+  final bool enableDtmf;
 
   DialPad({
     this.makeCall,
     this.keyPressed,
-    this.hideDialButton,
+    this.hideDialButton = false,
     this.hideSubtitle = false,
     this.outputMask,
-    this.buttonColor,
-    this.buttonTextColor,
-    this.dialButtonColor,
-    this.dialButtonIconColor,
-    this.dialButtonIcon,
-    this.dialOutputTextColor,
-    this.backspaceButtonIconColor,
-    this.enableDtmf,
+    this.buttonColor = Colors.grey,
+    this.buttonTextColor = Colors.black,
+    this.dialButtonColor = Colors.green,
+    this.dialButtonIconColor = Colors.white,
+    this.dialButtonIcon = Icons.phone,
+    this.dialOutputTextColor = Colors.black,
+    this.backspaceButtonIconColor = Colors.grey,
+    this.enableDtmf = false,
   });
 
   @override
@@ -100,13 +123,13 @@ class _DialPadState extends State<DialPad> {
     return DialButton(
       title: key.value,
       subtitle: altKey?.value ?? hint,
-      color: widget.buttonColor ?? Colors.grey,
-      hideSubtitle: widget.hideSubtitle ?? false,
+      color: widget.buttonColor,
+      hideSubtitle: widget.hideSubtitle,
       onTap: _onKeyPressed,
       buttonType: ButtonType.circle,
       padding: const EdgeInsets.all(12),
-      textColor: widget.buttonTextColor ?? Colors.black,
-      iconColor: widget.buttonTextColor ?? Colors.black,
+      textColor: widget.buttonTextColor,
+      iconColor: widget.buttonTextColor,
       subtitleIconColor: widget.buttonTextColor,
     );
   }
@@ -123,9 +146,9 @@ class _DialPadState extends State<DialPad> {
     final dialButton = ActionButton(
       padding: const EdgeInsets.all(12),
       buttonType: ButtonType.circle,
-      icon: widget.dialButtonIcon ?? Icons.phone,
-      iconColor: widget.dialButtonIconColor ?? Colors.white,
-      color: widget.dialButtonColor ?? Colors.green,
+      icon: widget.dialButtonIcon,
+      iconColor: widget.dialButtonIconColor,
+      color: widget.dialButtonColor,
       onTap: _onDialPressed,
       disabled: _value.isEmpty,
     );
@@ -136,7 +159,7 @@ class _DialPadState extends State<DialPad> {
       disabled: _value.isEmpty,
       buttonType: ButtonType.circle,
       iconSize: 75,
-      iconColor: widget.backspaceButtonIconColor ?? Colors.grey,
+      iconColor: widget.backspaceButtonIconColor,
       padding: const EdgeInsets.all(12),
       icon: Icons.backspace,
       color: Colors.transparent,
@@ -161,7 +184,7 @@ class _DialPadState extends State<DialPad> {
               child: PhoneTextField(
                 readOnly: true,
                 textStyle: TextStyle(
-                  color: widget.dialOutputTextColor ?? Colors.black,
+                  color: widget.dialOutputTextColor,
                   fontSize: sizeFactor / 2,
                 ),
                 decoration: InputDecoration(border: InputBorder.none),
