@@ -44,7 +44,18 @@ class DialPad extends StatefulWidget {
   /// Color of the output text, defaults to [Colors.black]
   final Color dialOutputTextColor;
 
-  /// outputMask is the mask applied to the output text. Defaults to ['(000) 000-0000']
+  /// Font size for the output text, defaults to 75
+  /// Text scales with the screen size using the shortest between (height & width) * 0.001 multiplied by the [dialOutputTextSize] value
+  final double dialOutputTextSize;
+
+  /// Font size for the output text, defaults to 75
+  final double buttonTextSize;
+
+  /// Font size for the output text, defaults to 25
+  /// Text scales with the screen size using the shortest between (height & width) * 0.001 multiplied by the [subtitleTextSize] value
+  final double subtitleTextSize;
+
+  /// outputMask is the mask applied to the output text. Defaults to (000) 000-0000
   final String? outputMask;
 
   /// Whether to enable DTMF tones. Defaults to [false]
@@ -62,6 +73,9 @@ class DialPad extends StatefulWidget {
     this.dialButtonIconColor = Colors.white,
     this.dialButtonIcon = Icons.phone,
     this.dialOutputTextColor = Colors.black,
+    this.dialOutputTextSize = 75,
+    this.buttonTextSize = 75,
+    this.subtitleTextSize = 25,
     this.backspaceButtonIconColor = Colors.grey,
     this.enableDtmf = false,
   });
@@ -132,6 +146,8 @@ class _DialPadState extends State<DialPad> {
       textColor: widget.buttonTextColor,
       iconColor: widget.buttonTextColor,
       subtitleIconColor: widget.buttonTextColor,
+      subtitleFontSize: widget.subtitleTextSize,
+      fontSize: widget.buttonTextSize,
     );
   }
 
@@ -186,7 +202,7 @@ class _DialPadState extends State<DialPad> {
                 readOnly: true,
                 textStyle: TextStyle(
                   color: widget.dialOutputTextColor,
-                  fontSize: sizeFactor / 2,
+                  fontSize: widget.dialOutputTextSize * sizeFactor,
                 ),
                 decoration: InputDecoration(border: InputBorder.none),
                 controller: _controller,
