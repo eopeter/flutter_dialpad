@@ -16,7 +16,11 @@ class KeypadFocusNode extends StatelessWidget {
   /// Handles the key events from the keyboard, and translates them into [DigitKey] or [ActionKey] events that are passed to [onKeypadPressed].
   /// Returns [KeyEventResult.handled] if the event was handled, or [KeyEventResult.ignored] if the event was ignored.
   KeyEventResult _handleOnKeyEvent(FocusNode node, KeyEvent event) {
-    if (event is KeyDownEvent) {
+    if ((event is KeyRepeatEvent || event is KeyDownEvent) && event.logicalKey == LogicalKeyboardKey.backspace) {
+      onKeypadPressed(ActionKey.backspace());
+      return KeyEventResult.handled;
+    } else if (event is KeyDownEvent) {
+      // check if this is a key down event, otherwise we might get the same event multiple times
       final physicalKey = event.physicalKey;
       final logicalKey = event.logicalKey;
       if (physicalKey == PhysicalKeyboardKey.numpad0 || physicalKey == PhysicalKeyboardKey.digit0) {
@@ -45,8 +49,6 @@ class KeypadFocusNode extends StatelessWidget {
         onKeypadPressed(ActionKey.plus());
       } else if (logicalKey == LogicalKeyboardKey.numberSign) {
         onKeypadPressed(ActionKey.hash());
-      } else if (logicalKey == LogicalKeyboardKey.backspace) {
-        onKeypadPressed(ActionKey.backspace());
       } else {
         return KeyEventResult.ignored;
       }
