@@ -62,6 +62,12 @@ class DialPad extends StatefulWidget {
   /// Whether to enable DTMF tones. Defaults to [false]
   final bool enableDtmf;
 
+  /// Padding around the button. Defaults to [EdgeInsets.all(0)].
+  final EdgeInsets buttonPadding;
+
+  /// Padding around the text field. Defaults to [EdgeInsets.only(left: 16, right: 16, top: 20, bottom: 16)].
+  final EdgeInsets textFieldPadding;
+
   DialPad({
     this.makeCall,
     this.keyPressed,
@@ -80,6 +86,8 @@ class DialPad extends StatefulWidget {
     this.subtitleTextSize = 25,
     this.backspaceButtonIconColor = Colors.grey,
     this.enableDtmf = false,
+    this.buttonPadding = const EdgeInsets.all(0),
+    this.textFieldPadding = const EdgeInsets.only(left: 16, right: 16, top: 20, bottom: 16),
   });
 
   @override
@@ -144,7 +152,7 @@ class _DialPadState extends State<DialPad> {
       hideSubtitle: widget.hideSubtitle,
       onTap: _onKeyPressed,
       buttonType: ButtonType.circle,
-      padding: const EdgeInsets.all(12),
+      padding: widget.buttonPadding,
       textColor: widget.buttonTextColor,
       iconColor: widget.buttonTextColor,
       subtitleIconColor: widget.buttonTextColor,
@@ -163,7 +171,7 @@ class _DialPadState extends State<DialPad> {
 
     /// Dial button
     final dialButton = ActionButton(
-      padding: const EdgeInsets.all(12),
+      padding: widget.buttonPadding,
       buttonType: ButtonType.circle,
       icon: widget.dialButtonIcon,
       iconColor: widget.dialButtonIconColor,
@@ -179,7 +187,7 @@ class _DialPadState extends State<DialPad> {
       buttonType: ButtonType.circle,
       iconSize: 75,
       iconColor: widget.backspaceButtonIconColor,
-      padding: const EdgeInsets.all(12),
+      padding: widget.buttonPadding,
       icon: Icons.backspace,
       color: Colors.transparent,
     );
@@ -199,7 +207,7 @@ class _DialPadState extends State<DialPad> {
         child: Column(
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.all(20),
+              padding: widget.textFieldPadding,
               child: PhoneTextField(
                 readOnly: true,
                 textStyle: TextStyle(
