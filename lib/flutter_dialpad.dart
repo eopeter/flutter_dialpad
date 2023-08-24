@@ -259,7 +259,8 @@ class _DialPadState extends State<DialPad> {
             iconColor: widget.dialButtonIconColor,
             color: widget.dialButtonColor,
             onTap: _onDialPressed,
-            disabled: _value.isEmpty || widget.makeCall == null,
+            // NOTE(cybex-dev) add as option in future
+            // disabled: _value.isEmpty || widget.makeCall == null,
           );
 
     /// Backspace button
