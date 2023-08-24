@@ -123,6 +123,29 @@ class _DialPadState extends State<DialPad> {
     }
   }
 
+  /// Handles backspace button press
+  void _onBackspacePressed() {
+    if (_value.isEmpty) {
+      return;
+    }
+
+    setState(() {
+      _value = _value.substring(0, _value.length - 1);
+      textEditingController!.text = _value;
+    });
+  }
+
+  /// Handles keyboard button presses
+  void _onKeypadPressed(KeyValue key) {
+    if (key is ActionKey && key.action == DialActionKey.backspace) {
+      // handle backspace
+      _onBackspacePressed();
+    } else {
+      // For numbers, and all actions except backspace
+      _onKeyPressed(key.value);
+    }
+  }
+
   Widget _defaultDialButtonBuilder(BuildContext context, int index, KeyValue key, KeyValue? altKey, String? hint) {
     return DialButton(
       title: key.value,
@@ -146,84 +169,80 @@ class _DialPadState extends State<DialPad> {
     final _dialButtonBuilder = /*widget.buttonBuilder ?? */_defaultDialButtonBuilder;
     final _generator = PhoneKeypadGenerator();
 
-    return Center(
-      child: Column(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(20),
-            child: PhoneTextField(
-              readOnly: true,
-              textStyle: TextStyle(
-                  color: widget.dialOutputTextColor ?? Colors.black,
-                  fontSize: sizeFactor / 2),
-              decoration: InputDecoration(border: InputBorder.none),
-              controller: textEditingController,
-            ),
-          ),
-          Expanded(
-            child: KeypadGrid(
-              itemCount: 12,
-              itemBuilder: (context, index) {
-                final key = _generator.get(index);
-                final altKey = _generator.getAlt(index);
-                final hint = _generator.hint(index);
-                return _dialButtonBuilder(context, index, key, altKey, hint);
-              },
-            ),
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Expanded(
-                child: Container(),
+    return KeypadFocusNode(
+      onKeypadPressed: _onKeypadPressed,
+      child: Center(
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(20),
+              child: PhoneTextField(
+                readOnly: true,
+                textStyle: TextStyle(
+                    color: widget.dialOutputTextColor ?? Colors.black,
+                    fontSize: sizeFactor / 2),
+                decoration: InputDecoration(border: InputBorder.none),
+                controller: textEditingController,
               ),
-              Expanded(
-                child: widget.hideDialButton != null && widget.hideDialButton!
-                    ? Container()
-                    : Center(
-                        child: DialButton(
-                          icon: widget.dialButtonIcon != null ? widget.dialButtonIcon : Icons.phone,
-                          color: widget.dialButtonColor != null ? widget.dialButtonColor! : Colors.green,
-                          hideSubtitle: widget.hideSubtitle!,
-                          onTap: (value) {
-                            widget.makeCall!(_value);
-                          },
-                        ),
-                      ),
+            ),
+            Expanded(
+              child: KeypadGrid(
+                itemCount: 12,
+                itemBuilder: (context, index) {
+                  final key = _generator.get(index);
+                  final altKey = _generator.getAlt(index);
+                  final hint = _generator.hint(index);
+                  return _dialButtonBuilder(context, index, key, altKey, hint);
+                },
               ),
-              Expanded(
-                child: Padding(
-                  padding:
-                      EdgeInsets.only(right: screenSize.height * 0.03685504),
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.backspace,
-                      size: sizeFactor / 2,
-                      color: _value.length > 0
-                          ? (widget.backspaceButtonIconColor != null
-                              ? widget.backspaceButtonIconColor
-                              : Colors.white24)
-                          : Colors.white24,
-                    ),
-                    onPressed: _value.length == 0
-                        ? null
-                        : () {
-                            if (_value.length > 0) {
-                              setState(() {
-                                _value = _value.substring(0, _value.length - 1);
-                                textEditingController!.text = _value;
-                              });
-                            }
-                          },
-                  ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Expanded(
+                  child: Container(),
                 ),
-              )
-            ],
-          )
-        ],
+                Expanded(
+                  child: widget.hideDialButton != null && widget.hideDialButton!
+                      ? Container()
+                      : Center(
+                          child: DialButton(
+                            icon: widget.dialButtonIcon != null ? widget.dialButtonIcon : Icons.phone,
+                            color: widget.dialButtonColor != null ? widget.dialButtonColor! : Colors.green,
+                            hideSubtitle: widget.hideSubtitle!,
+                            onTap: (value) {
+                              widget.makeCall!(_value);
+                            },
+                          ),
+                        ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding:
+                        EdgeInsets.only(right: screenSize.height * 0.03685504),
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.backspace,
+                        size: sizeFactor / 2,
+                        color: _value.length > 0
+                            ? (widget.backspaceButtonIconColor != null
+                                ? widget.backspaceButtonIconColor
+                                : Colors.white24)
+                            : Colors.white24,
+                      ),
+                      onPressed: _value.length == 0
+                          ? null
+                          : _onBackspacePressed,
+                    ),
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
