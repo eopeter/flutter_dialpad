@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dialpad_example/screens/dialpad_selection.dart';
 
-import 'screens/dialpad_metro.dart';
-
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
