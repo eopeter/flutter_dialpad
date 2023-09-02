@@ -8,6 +8,7 @@ import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 // import 'package:flutter_dtmf/dtmf.dart';
 
 import 'src/flutter_dialpad.dart';
+import 'src/widgets/scalable/scalable.dart';
 
 export 'src/flutter_dialpad.dart';
 
@@ -94,6 +95,18 @@ class DialPad extends StatefulWidget {
   /// Padding around the text field. Defaults to [EdgeInsets.only(left: 16, right: 16, top: 20, bottom: 16)].
   final EdgeInsets textFieldPadding;
 
+  /// Scaling type for the dial pad. Defaults to [ScalingType.min].
+  final ScalingType scalingType;
+
+  /// Scaling size for the dial pad. Defaults to [ScalingSize.medium].
+  final ScalingSize scalingSize;
+
+  /// [ScalingType] for the dial button. Defaults to [ScalingSize.medium].
+  final ScalingSize? dialingButtonScalingSize;
+
+  /// [ScalingType] for the dial button. Defaults to [ScalingSize.small].
+  final ScalingSize? backspaceButtonScalingSize;
+
   DialPad({
     this.makeCall,
     this.keyPressed,
@@ -122,6 +135,10 @@ class DialPad extends StatefulWidget {
     this.copyToClipboard = true,
     this.pasteFromClipboard = true,
     this.textFieldPadding = const EdgeInsets.only(left: 16, right: 16, top: 20, bottom: 16),
+    this.scalingType = ScalingType.min,
+    this.scalingSize = ScalingSize.medium,
+    this.dialingButtonScalingSize,
+    this.backspaceButtonScalingSize,
   });
 
   /// Returns a [DialPad] with an iOS-style design (i.e. Apple).
@@ -140,6 +157,9 @@ class DialPad extends StatefulWidget {
       buttonTextColor: Colors.black87,
       buttonColor: Colors.grey[300]!,
       buttonType: ButtonType.circle,
+      scalingSize: ScalingSize.large,
+      dialingButtonScalingSize: ScalingSize.large,
+      backspaceButtonScalingSize: ScalingSize.medium,
       buttonPadding: EdgeInsets.all(16),
       dialOutputTextSize: 75,
     );
@@ -163,6 +183,7 @@ class DialPad extends StatefulWidget {
       buttonType: ButtonType.rectangle,
       dialOutputTextSize: 75,
       dialButtonColor: Colors.blue,
+      scalingSize: ScalingSize.medium,
     );
   }
 
@@ -238,6 +259,8 @@ class _DialPadState extends State<DialPad> {
       subtitleIconColor: widget.buttonTextColor,
       subtitleFontSize: widget.subtitleTextSize,
       fontSize: widget.buttonTextSize,
+      scalingType: widget.scalingType,
+      scalingSize: widget.scalingSize,
     );
   }
 
@@ -259,6 +282,8 @@ class _DialPadState extends State<DialPad> {
             iconColor: widget.dialButtonIconColor,
             color: widget.dialButtonColor,
             onTap: _onDialPressed,
+            scalingType: widget.scalingType,
+            scalingSize: widget.dialingButtonScalingSize ?? widget.scalingSize,
             // NOTE(cybex-dev) add as option in future
             // disabled: _value.isEmpty || widget.makeCall == null,
           );
@@ -275,6 +300,8 @@ class _DialPadState extends State<DialPad> {
             padding: widget.buttonPadding,
             icon: Icons.backspace,
             color: Colors.transparent,
+            scalingType: widget.scalingType,
+            scalingSize: widget.backspaceButtonScalingSize ?? widget.scalingSize,
           );
 
     /// Footer contains the dial and backspace buttons
