@@ -225,12 +225,12 @@ class _DialPadState extends State<DialPad> {
   }
 
   Widget _defaultDialButtonBuilder(BuildContext context, int index, KeyValue key, KeyValue? altKey, String? hint) {
-    return DialButton(
+    return ActionButton(
       title: key.value,
       subtitle: altKey?.value ?? hint,
       color: widget.buttonColor,
       hideSubtitle: widget.hideSubtitle,
-      onTap: _onKeyPressed,
+      onTap: () => _onKeypadPressed(key),
       buttonType: widget.buttonType,
       padding: widget.buttonPadding,
       textColor: widget.buttonTextColor,
