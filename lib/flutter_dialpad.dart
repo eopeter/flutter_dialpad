@@ -51,7 +51,7 @@ class DialPad extends StatefulWidget {
   /// Color of the output text, defaults to [Colors.black]
   final Color dialOutputTextColor;
 
-  /// Font size for the output text, defaults to 75
+  /// Font size for the output text, defaults to 50
   /// Text scales with the screen size using the shortest between (height & width) * 0.001 multiplied by the [dialOutputTextSize] value
   final double dialOutputTextSize;
 
@@ -121,7 +121,7 @@ class DialPad extends StatefulWidget {
     this.dialButtonIconColor = Colors.white,
     this.dialButtonIcon = Icons.phone,
     this.dialOutputTextColor = Colors.black,
-    this.dialOutputTextSize = 75,
+    this.dialOutputTextSize = 50,
     this.buttonTextSize = 75,
     this.subtitleTextSize = 25,
     this.backspaceButtonIconColor = Colors.grey,
