@@ -83,6 +83,12 @@ class DialPad extends StatefulWidget {
   /// Padding around the button. Defaults to [EdgeInsets.all(0)].
   final EdgeInsets buttonPadding;
 
+  /// Padding around the button. Defaults to [buttonPadding].
+  final EdgeInsets? backspaceButtonPadding;
+
+  /// Padding around the button. Defaults to [buttonPadding].
+  final EdgeInsets? dialButtonPadding;
+
   /// Whether to call [makeCall] when the enter key is pressed. Defaults to false.
   final bool callOnEnter;
 
@@ -131,6 +137,8 @@ class DialPad extends StatefulWidget {
     this.generator = const PhoneKeypadGenerator(),
     this.buttonType = ButtonType.rectangle,
     this.buttonPadding = const EdgeInsets.all(0),
+    this.backspaceButtonPadding = const EdgeInsets.all(0),
+    this.dialButtonPadding = const EdgeInsets.all(0),
     this.callOnEnter = false,
     this.copyToClipboard = true,
     this.pasteFromClipboard = true,
@@ -161,7 +169,8 @@ class DialPad extends StatefulWidget {
       dialingButtonScalingSize: ScalingSize.large,
       backspaceButtonScalingSize: ScalingSize.medium,
       buttonPadding: EdgeInsets.all(16),
-      dialOutputTextSize: 75,
+      backspaceButtonPadding: EdgeInsets.all(24),
+      dialButtonPadding: EdgeInsets.all(8),
     );
   }
 
@@ -276,7 +285,7 @@ class _DialPadState extends State<DialPad> {
     final dialButton = widget.hideDialButton
         ? null
         : ActionButton(
-            padding: widget.buttonPadding,
+            padding: widget.dialButtonPadding ?? widget.buttonPadding,
             buttonType: widget.buttonType,
             icon: widget.dialButtonIcon,
             iconColor: widget.dialButtonIconColor,
@@ -297,7 +306,7 @@ class _DialPadState extends State<DialPad> {
             buttonType: widget.buttonType,
             iconSize: 75,
             iconColor: widget.backspaceButtonIconColor,
-            padding: widget.buttonPadding,
+            padding: widget.backspaceButtonPadding ?? widget.buttonPadding,
             icon: Icons.backspace,
             color: Colors.transparent,
             scalingType: widget.scalingType,
