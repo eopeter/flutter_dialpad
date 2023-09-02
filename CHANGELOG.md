@@ -11,6 +11,14 @@
 * Add custom text size fields for dial, button and subtitle text
 * Add `buttonType` button style, for circular-or-rectangle-styles.
 * Update example with prebuilt UIs
+* Custom `ScalingType` and `ScalingSize` allows for customizability with the scalar value when determining the text/widget size.
+  * `ScalingType` determines how the viewport window dimensions are used
+  * `ScalingSize` is an enum providing preset scalar values, allowing for more flexibility than the default `0.001`
+  * `Scalable` mixin allows provides a `rescale` function returning the newly scaled widget/text sizes
+  * `ScalableButton` provides inheritable scaling properties based on `MaterialButton`
+* Add `copyToClipboard` custom widget builder for `PhoneTextInput`
+* Add `dialButton` & `backspaceButton` padding
+* Added default & button-specific `ScalingType` and `ScalingSize` options
 
 ## [1.0.5] - 2023-02-08
 * Add ability to hide DialButton subtitle text

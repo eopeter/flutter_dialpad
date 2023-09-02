@@ -1,7 +1,5 @@
 library flutter_dialpad;
 
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 // disabled temporarily
@@ -50,7 +48,7 @@ class DialPad extends StatefulWidget {
   /// Color of the output text, defaults to [Colors.black]
   final Color dialOutputTextColor;
 
-  /// Font size for the output text, defaults to 75
+  /// Font size for the output text, defaults to 50
   /// Text scales with the screen size using the shortest between (height & width) * 0.001 multiplied by the [dialOutputTextSize] value
   final double dialOutputTextSize;
 
@@ -82,6 +80,12 @@ class DialPad extends StatefulWidget {
   /// Padding around the button. Defaults to [EdgeInsets.all(0)].
   final EdgeInsets buttonPadding;
 
+  /// Padding around the button. Defaults to [buttonPadding].
+  final EdgeInsets? backspaceButtonPadding;
+
+  /// Padding around the button. Defaults to [buttonPadding].
+  final EdgeInsets? dialButtonPadding;
+
   /// Whether to call [makeCall] when the enter key is pressed. Defaults to false.
   final bool callOnEnter;
 
@@ -93,6 +97,18 @@ class DialPad extends StatefulWidget {
 
   /// Padding around the text field. Defaults to [EdgeInsets.only(left: 16, right: 16, top: 20, bottom: 16)].
   final EdgeInsets textFieldPadding;
+
+  /// Scaling type for the dial pad. Defaults to [ScalingType.min].
+  final ScalingType scalingType;
+
+  /// Scaling size for the dial pad. Defaults to [ScalingSize.medium].
+  final ScalingSize scalingSize;
+
+  /// [ScalingType] for the dial button. Defaults to [ScalingSize.medium].
+  final ScalingSize? dialingButtonScalingSize;
+
+  /// [ScalingType] for the dial button. Defaults to [ScalingSize.small].
+  final ScalingSize? backspaceButtonScalingSize;
 
   DialPad({
     this.makeCall,
@@ -108,7 +124,7 @@ class DialPad extends StatefulWidget {
     this.dialButtonIconColor = Colors.white,
     this.dialButtonIcon = Icons.phone,
     this.dialOutputTextColor = Colors.black,
-    this.dialOutputTextSize = 75,
+    this.dialOutputTextSize = 50,
     this.buttonTextSize = 75,
     this.subtitleTextSize = 25,
     this.backspaceButtonIconColor = Colors.grey,
@@ -118,10 +134,16 @@ class DialPad extends StatefulWidget {
     this.generator = const PhoneKeypadGenerator(),
     this.buttonType = ButtonType.rectangle,
     this.buttonPadding = const EdgeInsets.all(0),
+    this.backspaceButtonPadding = const EdgeInsets.all(0),
+    this.dialButtonPadding = const EdgeInsets.all(0),
     this.callOnEnter = false,
     this.copyToClipboard = true,
     this.pasteFromClipboard = true,
     this.textFieldPadding = const EdgeInsets.only(left: 16, right: 16, top: 20, bottom: 16),
+    this.scalingType = ScalingType.min,
+    this.scalingSize = ScalingSize.medium,
+    this.dialingButtonScalingSize,
+    this.backspaceButtonScalingSize,
   });
 
   /// Returns a [DialPad] with an iOS-style design (i.e. Apple).
@@ -140,8 +162,15 @@ class DialPad extends StatefulWidget {
       buttonTextColor: Colors.black87,
       buttonColor: Colors.grey[300]!,
       buttonType: ButtonType.circle,
-      buttonPadding: EdgeInsets.all(16),
       dialOutputTextSize: 75,
+      buttonTextSize: 50,
+      subtitleTextSize: 15,
+      scalingSize: ScalingSize.large,
+      dialingButtonScalingSize: ScalingSize.large,
+      backspaceButtonScalingSize: ScalingSize.medium,
+      buttonPadding: EdgeInsets.all(16),
+      backspaceButtonPadding: EdgeInsets.all(24),
+      dialButtonPadding: EdgeInsets.all(8),
     );
   }
 
@@ -163,6 +192,7 @@ class DialPad extends StatefulWidget {
       buttonType: ButtonType.rectangle,
       dialOutputTextSize: 75,
       dialButtonColor: Colors.blue,
+      scalingSize: ScalingSize.medium,
     );
   }
 
@@ -225,12 +255,12 @@ class _DialPadState extends State<DialPad> {
   }
 
   Widget _defaultDialButtonBuilder(BuildContext context, int index, KeyValue key, KeyValue? altKey, String? hint) {
-    return DialButton(
+    return ActionButton(
       title: key.value,
       subtitle: altKey?.value ?? hint,
       color: widget.buttonColor,
       hideSubtitle: widget.hideSubtitle,
-      onTap: _onKeyPressed,
+      onTap: () => _onKeypadPressed(key),
       buttonType: widget.buttonType,
       padding: widget.buttonPadding,
       textColor: widget.buttonTextColor,
@@ -238,27 +268,28 @@ class _DialPadState extends State<DialPad> {
       subtitleIconColor: widget.buttonTextColor,
       subtitleFontSize: widget.subtitleTextSize,
       fontSize: widget.buttonTextSize,
+      scalingType: widget.scalingType,
+      scalingSize: widget.scalingSize,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
-    final sizeFactor = min(screenSize.height, screenSize.width) * 0.001;
-
-    final _keypadButtonBuilder = /*widget.keypadButtonBuilder ??  */_defaultDialButtonBuilder;
+    final _keypadButtonBuilder = /*widget.keypadButtonBuilder ??  */ _defaultDialButtonBuilder;
     final _generator = widget.generator ?? IosKeypadGenerator();
 
     /// Dial button
     final dialButton = widget.hideDialButton
         ? null
         : ActionButton(
-            padding: widget.buttonPadding,
+            padding: widget.dialButtonPadding ?? widget.buttonPadding,
             buttonType: widget.buttonType,
             icon: widget.dialButtonIcon,
             iconColor: widget.dialButtonIconColor,
             color: widget.dialButtonColor,
             onTap: _onDialPressed,
+            scalingType: widget.scalingType,
+            scalingSize: widget.dialingButtonScalingSize ?? widget.scalingSize,
             // NOTE(cybex-dev) add as option in future
             // disabled: _value.isEmpty || widget.makeCall == null,
           );
@@ -268,13 +299,15 @@ class _DialPadState extends State<DialPad> {
         ? null
         : ActionButton(
             onTap: _onBackspacePressed,
-            disabled: _value.isEmpty,
+            // disabled: _value.isEmpty,
             buttonType: widget.buttonType,
             iconSize: 75,
             iconColor: widget.backspaceButtonIconColor,
-            padding: widget.buttonPadding,
+            padding: widget.backspaceButtonPadding ?? widget.buttonPadding,
             icon: Icons.backspace,
             color: Colors.transparent,
+            scalingType: widget.scalingType,
+            scalingSize: widget.backspaceButtonScalingSize ?? widget.scalingSize,
           );
 
     /// Footer contains the dial and backspace buttons
@@ -288,38 +321,39 @@ class _DialPadState extends State<DialPad> {
             ],
           );
 
+    final children = <Widget>[
+      Padding(
+        padding: widget.textFieldPadding,
+        child: PhoneTextField(
+          textColor: widget.dialOutputTextColor,
+          textSize: widget.dialOutputTextSize,
+          decoration: InputDecoration(border: InputBorder.none, hintText: widget.hint),
+          controller: _controller,
+          copyToClipboard: widget.copyToClipboard,
+          readOnly: !widget.pasteFromClipboard,
+          scalingType: widget.scalingType,
+        ),
+      ),
+      Expanded(
+        child: KeypadGrid(
+          itemCount: 12,
+          itemBuilder: (context, index) {
+            final key = _generator.get(index);
+            final altKey = _generator.getAlt(index);
+            final hint = _generator.hint(index);
+            return _keypadButtonBuilder(context, index, key, altKey, hint);
+          },
+          footer: footer,
+        ),
+      )
+    ];
+
     return KeypadFocusNode(
       onKeypadPressed: _onKeypadPressed,
-      child: Center(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: widget.textFieldPadding,
-              child: PhoneTextField(
-                textStyle: TextStyle(
-                  color: widget.dialOutputTextColor,
-                  fontSize: widget.dialOutputTextSize * sizeFactor,
-                ),
-                decoration: InputDecoration(border: InputBorder.none, hintText: widget.hint),
-                controller: _controller,
-                copyToClipboard: widget.copyToClipboard,
-                readOnly: !widget.pasteFromClipboard,
-              ),
-            ),
-            Expanded(
-              child: KeypadGrid(
-                itemCount: 12,
-                itemBuilder: (context, index) {
-                  final key = _generator.get(index);
-                  final altKey = _generator.getAlt(index);
-                  final hint = _generator.hint(index);
-                  return _keypadButtonBuilder(context, index, key, altKey, hint);
-                },
-                footer: footer,
-              ),
-            )
-          ],
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisSize: MainAxisSize.min,
+        children: children,
       ),
     );
   }

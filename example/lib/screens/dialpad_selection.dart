@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'dialpad_ios.dart';
 import 'dialpad_metro.dart';
-import 'dialpad_plain.dart';
+import 'dialpad_basic.dart';
 
 class DialPadSelection extends StatelessWidget {
   const DialPadSelection({super.key});
@@ -41,9 +41,9 @@ class DialPadSelection extends StatelessWidget {
 
             /// Plain-Style
             TextButton(
-              child: Text("Plain-style"),
+              child: Text("Basic-style"),
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => DialPadPlain()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => DialPadBasic()));
               },
             ),
           ],

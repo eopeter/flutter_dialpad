@@ -1,4 +1,0 @@
-enum ButtonType {
-  rectangle,
-  circle;
-}
