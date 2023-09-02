@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import '../mixins/scalable.dart';
 import 'scalable/scalable.dart';
 
+typedef CopyToClipboardBuilder = Widget Function(BuildContext context, VoidCallback onCopyPressed);
+
 class PhoneTextField extends StatelessWidget with Scalable {
   /// TextStyle for the text field.
   final TextStyle? textStyle;
@@ -35,6 +37,9 @@ class PhoneTextField extends StatelessWidget with Scalable {
   /// The alignment of the text field. Defaults to [TextAlign.center].
   final TextAlign textAlign;
 
+  /// Builder for the copyToClipboard widget. Defaults to [_defaultCopyToClipboardBuilder].
+  final CopyToClipboardBuilder? copyToClipboardBuilder;
+
   /// [ScalingType] for the button. Defaults to [ScalingType.fixed].
   final ScalingType scalingType;
 
@@ -53,12 +58,17 @@ class PhoneTextField extends StatelessWidget with Scalable {
     this.textAlign = TextAlign.center,
     this.copyToClipboard = false,
     required this.controller,
+    this.copyToClipboardBuilder,
     this.scalingType = ScalingType.fixed,
     this.scalingSize = ScalingSize.small,
   });
 
   void _onCopyPressed() {
     Clipboard.setData(ClipboardData(text: controller.text));
+  }
+
+  Widget _defaultCopyToClipboardBuilder() {
+    return IconButton(icon: Icon(Icons.copy), onPressed: _onCopyPressed);
   }
 
   @override
@@ -84,7 +94,7 @@ class PhoneTextField extends StatelessWidget with Scalable {
       return Row(
         children: [
           Expanded(child: textField),
-          IconButton(icon: Icon(Icons.copy), onPressed: _onCopyPressed),
+          copyToClipboardBuilder?.call(context, _onCopyPressed) ?? _defaultCopyToClipboardBuilder(),
         ],
       );
     } else {
