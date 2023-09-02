@@ -1,14 +1,11 @@
 library flutter_dialpad;
 
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 // disabled temporarily
 // import 'package:flutter_dtmf/dtmf.dart';
 
 import 'src/flutter_dialpad.dart';
-import 'src/widgets/scalable/scalable.dart';
 
 export 'src/flutter_dialpad.dart';
 
