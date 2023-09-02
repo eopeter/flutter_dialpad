@@ -165,6 +165,9 @@ class DialPad extends StatefulWidget {
       buttonTextColor: Colors.black87,
       buttonColor: Colors.grey[300]!,
       buttonType: ButtonType.circle,
+      dialOutputTextSize: 75,
+      buttonTextSize: 50,
+      subtitleTextSize: 15,
       scalingSize: ScalingSize.large,
       dialingButtonScalingSize: ScalingSize.large,
       backspaceButtonScalingSize: ScalingSize.medium,
@@ -275,10 +278,7 @@ class _DialPadState extends State<DialPad> {
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
-    final sizeFactor = min(screenSize.height, screenSize.width) * 0.001;
-
-    final _keypadButtonBuilder = /*widget.keypadButtonBuilder ??  */_defaultDialButtonBuilder;
+    final _keypadButtonBuilder = /*widget.keypadButtonBuilder ??  */ _defaultDialButtonBuilder;
     final _generator = widget.generator ?? IosKeypadGenerator();
 
     /// Dial button
@@ -302,7 +302,7 @@ class _DialPadState extends State<DialPad> {
         ? null
         : ActionButton(
             onTap: _onBackspacePressed,
-            disabled: _value.isEmpty,
+            // disabled: _value.isEmpty,
             buttonType: widget.buttonType,
             iconSize: 75,
             iconColor: widget.backspaceButtonIconColor,
@@ -324,38 +324,39 @@ class _DialPadState extends State<DialPad> {
             ],
           );
 
+    final children = <Widget>[
+      Padding(
+        padding: widget.textFieldPadding,
+        child: PhoneTextField(
+          textColor: widget.dialOutputTextColor,
+          textSize: widget.dialOutputTextSize,
+          decoration: InputDecoration(border: InputBorder.none, hintText: widget.hint),
+          controller: _controller,
+          copyToClipboard: widget.copyToClipboard,
+          readOnly: !widget.pasteFromClipboard,
+          scalingType: widget.scalingType,
+        ),
+      ),
+      Expanded(
+        child: KeypadGrid(
+          itemCount: 12,
+          itemBuilder: (context, index) {
+            final key = _generator.get(index);
+            final altKey = _generator.getAlt(index);
+            final hint = _generator.hint(index);
+            return _keypadButtonBuilder(context, index, key, altKey, hint);
+          },
+          footer: footer,
+        ),
+      )
+    ];
+
     return KeypadFocusNode(
       onKeypadPressed: _onKeypadPressed,
-      child: Center(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: widget.textFieldPadding,
-              child: PhoneTextField(
-                textStyle: TextStyle(
-                  color: widget.dialOutputTextColor,
-                  fontSize: widget.dialOutputTextSize * sizeFactor,
-                ),
-                decoration: InputDecoration(border: InputBorder.none, hintText: widget.hint),
-                controller: _controller,
-                copyToClipboard: widget.copyToClipboard,
-                readOnly: !widget.pasteFromClipboard,
-              ),
-            ),
-            Expanded(
-              child: KeypadGrid(
-                itemCount: 12,
-                itemBuilder: (context, index) {
-                  final key = _generator.get(index);
-                  final altKey = _generator.getAlt(index);
-                  final hint = _generator.hint(index);
-                  return _keypadButtonBuilder(context, index, key, altKey, hint);
-                },
-                footer: footer,
-              ),
-            )
-          ],
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisSize: MainAxisSize.min,
+        children: children,
       ),
     );
   }
