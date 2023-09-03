@@ -11,7 +11,11 @@ dependencies:
     sdk: flutter
 
 #  flutter_dtmf: ^2.0.2
-  flutter_masked_text2: ^0.9.1
+  # Since flutter_masked_text2 is no longer supported, we use a forked version until a package with fix becomes available or an alternative is implemented
+  flutter_masked_text2:
+    git:
+        url: https://github.com/cybex-dev/flutter_masked_text
+        ref: 156f63b77d23148d9f1544230e3201ab6172f470 # branch 'fix_null_mask'
   #auto_size_text: ^2.0.2+1
 
 dev_dependencies:
