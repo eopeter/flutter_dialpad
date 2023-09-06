@@ -60,7 +60,7 @@ class DialPad extends StatefulWidget {
   final double subtitleTextSize;
 
   /// outputMask is the mask applied to the output text. Defaults to (000) 000-0000
-  final String outputMask;
+  final String? outputMask;
   final String hint;
 
   /// Whether to enable DTMF tones. Defaults to [false].
