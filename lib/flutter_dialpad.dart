@@ -223,7 +223,6 @@ class DialPad extends StatefulWidget {
       buttonTextColor: Colors.black54,
       buttonColor: Colors.white,
       buttonType: ButtonType.rectangle,
-      dialOutputTextSize: 75,
       dialButtonColor: Colors.blue,
       scalingSize: ScalingSize.medium,
     );
