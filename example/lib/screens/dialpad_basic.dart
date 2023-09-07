@@ -20,8 +20,6 @@ class DialPadBasic extends StatelessWidget {
       body: DialPad(
         makeCall: _makeCall,
         keyPressed: _keyPressed,
-        scalingType: ScalingType.fixed,
-        scalingSize: ScalingSize.small,
       ),
     );
   }

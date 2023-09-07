@@ -1,4 +1,5 @@
 ## [1.1.0] - 2023-00-23
+
 * Add custom keypad `keypad_generator`s with extensibility options.
 * Add `DialButton`with (future release) custom `keypadButtonBuilder` for specific usecases.
 * Refactor Flutter Dialpad with prebuilt UIs (iOS, metro theme styles).
@@ -21,19 +22,23 @@
 * Added default & button-specific `ScalingType` and `ScalingSize` options
 * Add content padding for dial, backspace and keypad buttons
 * Add customizing dial, backspace button color & sizes
-* Add scale clamping as a percentage of icon/text size for improved UI/UX
+* Add scale clamping as a percentage of icon/text size for improved UI/UX, with defaults to [0.2, 1.0]
 
 ## [1.0.5] - 2023-02-08
+
 * Add ability to hide DialButton subtitle text
 
 ## [1.0.4] - 2022-02-21
+
 * Crash Fix
 
 ## [1.0.3] - 2022-01-20
+
 * Add Key Press Event
 * Dtmf Library Update
 
 ## [1.0.2] - 2022-01-20
+
 * Bug Fixes
 
 ## [1.0.1] - 2021-05-01
