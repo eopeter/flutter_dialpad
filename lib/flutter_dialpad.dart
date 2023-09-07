@@ -278,7 +278,7 @@ class _DialPadState extends State<DialPad> {
     }
   }
 
-  Widget _defaultDialButtonBuilder(BuildContext context, int index, KeyValue key, KeyValue? altKey, String? hint) {
+  Widget _defaultKeypadButtonBuilder(BuildContext context, int index, KeyValue key, KeyValue? altKey, String? hint) {
     return ActionButton(
       title: key.value,
       subtitle: altKey?.value ?? hint,
@@ -300,7 +300,7 @@ class _DialPadState extends State<DialPad> {
 
   @override
   Widget build(BuildContext context) {
-    final _keypadButtonBuilder = /*widget.keypadButtonBuilder ??  */ _defaultDialButtonBuilder;
+    final _keypadButtonBuilder = /*widget.keypadButtonBuilder ??  */ _defaultKeypadButtonBuilder;
     final _generator = widget.generator ?? IosKeypadGenerator();
 
     /// Dial button
