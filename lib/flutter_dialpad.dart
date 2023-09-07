@@ -17,6 +17,9 @@ class DialPad extends StatefulWidget {
   /// Callback when a key is pressed.
   final ValueSetter<String>? keyPressed;
 
+  /// Callback when text controller's content changed.
+  final ValueChanged<String>? onTextChanged;
+
   /// Whether to hide the dial button. Defaults to false.
   final bool hideDialButton;
 
@@ -133,9 +136,13 @@ class DialPad extends StatefulWidget {
   /// Add keypad button content padding used by [_defaultKeypadButtonBuilder]. Defaults to [EdgeInsets.zero].
   final EdgeInsets? keyButtonContentPadding;
 
+  /// Hide backspace button when text field is empty. Defaults to [false].
+  final bool hideBackspaceOnEmpty;
+
   DialPad({
     this.makeCall,
     this.keyPressed,
+    this.onTextChanged,
     this.hideDialButton = false,
     this.hideBackspaceButton = false,
     this.hideSubtitle = false,
@@ -175,6 +182,7 @@ class DialPad extends StatefulWidget {
     this.dialContentPadding,
     this.backspaceContentPadding,
     this.keyButtonContentPadding,
+    this.hideBackspaceOnEmpty = false,
   });
 
   /// Returns a [DialPad] with an iOS-style design (i.e. Apple).
@@ -195,8 +203,8 @@ class DialPad extends StatefulWidget {
       buttonType: ButtonType.circle,
       backspaceButtonIconSize: 50,
       dialButtonIconSize: 75,
-      buttonTextSize: 100,
-      subtitleTextSize: 15,
+      buttonTextSize: 75,
+      subtitleTextSize: 25,
       scalingSize: ScalingSize.small,
       dialingButtonScalingSize: ScalingSize.medium,
       backspaceButtonScalingSize: ScalingSize.medium,
@@ -204,6 +212,7 @@ class DialPad extends StatefulWidget {
       backspaceButtonPadding: EdgeInsets.all(12),
       dialButtonPadding: EdgeInsets.all(8),
       maxScalingSize: 0.7,
+      hideBackspaceOnEmpty: true,
     );
   }
 
@@ -242,6 +251,13 @@ class _DialPadState extends State<DialPad> {
     _controller = MaskedTextController(mask: widget.outputMask);
   }
 
+  /// Handles text field content change, notifies [onTextChanged] callback
+  void _onTextChanged() {
+    if (widget.onTextChanged != null) {
+      widget.onTextChanged!(_controller.text);
+    }
+  }
+
   /// Handles keypad button press, this includes numbers and [DialActionKey] except [DialActionKey.backspace]
   void _onKeyPressed(String? value) {
     if (value != null) {
@@ -268,10 +284,13 @@ class _DialPadState extends State<DialPad> {
   void _onDialPressed() {
     if (widget.makeCall != null && _value.isNotEmpty) {
       widget.makeCall!(_value);
+      if (widget.enableDtmf) {
+        Dtmf.playTone(digits: _value);
+      }
     }
   }
 
-  /// Handles keyboard button presses
+  /// Handles all keyboard / UI keypad button presses
   void _onKeypadPressed(KeyValue key) {
     if (key is ActionKey && key.action == DialActionKey.backspace) {
       // handle backspace
@@ -284,6 +303,9 @@ class _DialPadState extends State<DialPad> {
       // For numbers, and all actions except backspace
       _onKeyPressed(key.value);
     }
+
+    // notifies UI of input changed
+    _onTextChanged();
   }
 
   Widget _defaultKeypadButtonBuilder(BuildContext context, int index, KeyValue key, KeyValue? altKey, String? hint) {
@@ -335,10 +357,10 @@ class _DialPadState extends State<DialPad> {
           );
 
     /// Backspace button
-    final backspaceButton = widget.hideBackspaceButton
+    final backspaceButton = widget.hideBackspaceButton || (_value.isEmpty && widget.hideBackspaceOnEmpty)
         ? null
         : ActionButton(
-            onTap: _onBackspacePressed,
+            onTap: () => _onKeypadPressed(ActionKey.backspace()),
             // disabled: _value.isEmpty,
             buttonType: widget.buttonType,
             iconSize: widget.backspaceButtonIconSize ?? 50,
@@ -401,5 +423,11 @@ class _DialPadState extends State<DialPad> {
         children: children,
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }
