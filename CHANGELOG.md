@@ -20,6 +20,8 @@
 * Add `dialButton` & `backspaceButton` padding
 * Added default & button-specific `ScalingType` and `ScalingSize` options
 * Add content padding for dial, backspace and keypad buttons
+* Add customizing dial, backspace button color & sizes
+* Add scale clamping as a percentage of icon/text size for improved UI/UX
 
 ## [1.0.5] - 2023-02-08
 * Add ability to hide DialButton subtitle text
