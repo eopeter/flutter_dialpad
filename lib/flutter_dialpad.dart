@@ -116,11 +116,11 @@ class DialPad extends StatefulWidget {
   /// [ScalingType] for the dial button. Defaults to [ScalingSize.small].
   final ScalingSize? backspaceButtonScalingSize;
 
-  /// Clamp the scaling size to a maximum value, this limits the rescaling size as a percentage of the provided value e.g. font or text size.
-  final double? maxScalingSize;
+  /// Clamp the scaling size to a maximum value, this limits the rescaling size as a percentage of the provided value e.g. font or text size. Defaults to 1.0
+  final double maxScalingSize;
 
-  /// Clamp the scaling size to a minimum value, this limits the rescaling size as a percentage of the provided value e.g. font or text size.
-  final double? minScalingSize;
+  /// Clamp the scaling size to a minimum value, this limits the rescaling size as a percentage of the provided value e.g. font or text size. Defaults to 0.2
+  final double minScalingSize;
 
   /// Add dial button icon size. Defaults to [75].
   final double? dialButtonIconSize;
@@ -170,8 +170,8 @@ class DialPad extends StatefulWidget {
     this.backspaceButtonScalingSize,
     this.backspaceButtonColor,
     this.backspaceButtonIconSize,
-    this.minScalingSize,
-    this.maxScalingSize,
+    this.minScalingSize = 0.2,
+    this.maxScalingSize = 1.0,
     this.dialButtonIconSize,
     this.dialContentPadding,
     this.backspaceContentPadding,
