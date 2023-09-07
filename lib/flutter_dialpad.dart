@@ -203,6 +203,7 @@ class DialPad extends StatefulWidget {
       buttonPadding: EdgeInsets.all(16),
       backspaceButtonPadding: EdgeInsets.all(24),
       dialButtonPadding: EdgeInsets.all(8),
+      maxScalingSize: 0.7,
     );
   }
 
