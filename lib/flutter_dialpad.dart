@@ -83,6 +83,12 @@ class DialPad extends StatefulWidget {
   /// Padding around the button. Defaults to [buttonPadding].
   final EdgeInsets? backspaceButtonPadding;
 
+  /// Background color of the backspace button. Defaults to [buttonColor].
+  final Color? backspaceButtonColor;
+
+  /// Icon size of the backspace button. Defaults to [75].
+  final double? backspaceButtonIconSize;
+
   /// Padding around the button. Defaults to [buttonPadding].
   final EdgeInsets? dialButtonPadding;
 
@@ -156,6 +162,8 @@ class DialPad extends StatefulWidget {
     this.scalingSize = ScalingSize.medium,
     this.dialingButtonScalingSize,
     this.backspaceButtonScalingSize,
+    this.backspaceButtonColor,
+    this.backspaceButtonIconSize,
     this.dialButtonIconSize,
     this.dialContentPadding,
     this.backspaceContentPadding,
@@ -320,11 +328,11 @@ class _DialPadState extends State<DialPad> {
             onTap: _onBackspacePressed,
             // disabled: _value.isEmpty,
             buttonType: widget.buttonType,
-            iconSize: 75,
+            iconSize: widget.backspaceButtonIconSize ?? 75,
             iconColor: widget.backspaceButtonIconColor,
             padding: widget.backspaceButtonPadding ?? widget.buttonPadding,
             icon: Icons.backspace,
-            color: Colors.transparent,
+            color: widget.backspaceButtonColor ?? Colors.transparent,
             scalingType: widget.scalingType,
             scalingSize: widget.backspaceButtonScalingSize ?? widget.scalingSize,
             contentPadding: widget.backspaceContentPadding,
