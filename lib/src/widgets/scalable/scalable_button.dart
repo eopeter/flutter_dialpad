@@ -42,20 +42,24 @@ class ScalableButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Use MaterialButton to get the Material ripple, splash and highlight colors including animations and gestures.
-    return MaterialButton(
-      color: createMaterialColor(color),
+    return Container(
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        shape: buttonType == ButtonType.rectangle ? BoxShape.rectangle : BoxShape.circle,
+      ),
+      child: MaterialButton(
+        color: createMaterialColor(color),
         onPressed: disabled ? null : onPressed,
         onLongPress: disabled ? null : onLongPressed,
-      animationDuration: Duration(milliseconds: 300),
-      child: Center(
-        child: child,
+        animationDuration: Duration(milliseconds: 300),
+        child: Center(
+          child: child,
+        ),
+        padding: padding,
+        elevation: 0,
+        highlightElevation: 0,
+        hoverElevation: 0,
       ),
-      shape: buttonType == ButtonType.rectangle ? RoundedRectangleBorder(borderRadius: BorderRadius.zero) : CircleBorder(),
-      padding: padding,
-      elevation: 0,
-      highlightElevation: 0,
-      hoverElevation: 0,
-      clipBehavior: Clip.antiAliasWithSaveLayer,
     );
   }
 }
