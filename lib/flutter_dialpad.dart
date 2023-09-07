@@ -116,6 +116,12 @@ class DialPad extends StatefulWidget {
   /// [ScalingType] for the dial button. Defaults to [ScalingSize.small].
   final ScalingSize? backspaceButtonScalingSize;
 
+  /// Clamp the scaling size to a maximum value, this limits the rescaling size as a percentage of the provided value e.g. font or text size.
+  final double? maxScalingSize;
+
+  /// Clamp the scaling size to a minimum value, this limits the rescaling size as a percentage of the provided value e.g. font or text size.
+  final double? minScalingSize;
+
   /// Add dial button icon size. Defaults to [75].
   final double? dialButtonIconSize;
 
@@ -164,6 +170,8 @@ class DialPad extends StatefulWidget {
     this.backspaceButtonScalingSize,
     this.backspaceButtonColor,
     this.backspaceButtonIconSize,
+    this.minScalingSize,
+    this.maxScalingSize,
     this.dialButtonIconSize,
     this.dialContentPadding,
     this.backspaceContentPadding,
@@ -296,6 +304,8 @@ class _DialPadState extends State<DialPad> {
       fontSize: widget.buttonTextSize,
       scalingType: widget.scalingType,
       scalingSize: widget.scalingSize,
+      minScalingSize: widget.minScalingSize,
+      maxScalingSize: widget.maxScalingSize,
     );
   }
 
@@ -317,6 +327,8 @@ class _DialPadState extends State<DialPad> {
             onTap: _onDialPressed,
             scalingType: widget.scalingType,
             scalingSize: widget.dialingButtonScalingSize ?? widget.scalingSize,
+            minScalingSize: widget.minScalingSize,
+            maxScalingSize: widget.maxScalingSize,
             contentPadding: widget.dialContentPadding,
             // NOTE(cybex-dev) add as option in future
             // disabled: _value.isEmpty || widget.makeCall == null,
@@ -336,6 +348,8 @@ class _DialPadState extends State<DialPad> {
             color: widget.backspaceButtonColor ?? Colors.transparent,
             scalingType: widget.scalingType,
             scalingSize: widget.backspaceButtonScalingSize ?? widget.scalingSize,
+            minScalingSize: widget.minScalingSize,
+            maxScalingSize: widget.maxScalingSize,
             contentPadding: widget.backspaceContentPadding,
           );
 

@@ -75,6 +75,13 @@ class ActionButton extends StatelessWidget with Scalable {
   /// [ScalingSize] for the button. Defaults to [ScalingSize.small].
   final ScalingSize scalingSize;
 
+  /// Minimum scaling size for the button content. Defaults to null.
+  final double? minScalingSize;
+
+  /// Maximum scaling size for the button content. Defaults to null.
+  final double? maxScalingSize;
+
+  /// Padding around the button's content. Defaults to null.
   final EdgeInsets? contentPadding;
 
   ActionButton({
@@ -99,12 +106,14 @@ class ActionButton extends StatelessWidget with Scalable {
     this.disabled = false,
     this.scalingType = ScalingType.fixed,
     this.scalingSize = ScalingSize.small,
+    this.minScalingSize,
+    this.maxScalingSize,
     this.contentPadding,
   });
 
   /// Get title widget, prefer icon over title
   Widget _buildTitleWidget(Size screenSize) {
-    double size = rescale(screenSize, scalingType, icon != null ? iconSize : fontSize, scalingSize: scalingSize);
+    double size = rescale(screenSize, scalingType, icon != null ? iconSize : fontSize, scalingSize: scalingSize, minClamp: minScalingSize, maxClamp: maxScalingSize);
     Widget widget = icon != null
         ? Icon(icon, size: size, color: iconColor)
         : Text(
@@ -130,11 +139,11 @@ class ActionButton extends StatelessWidget with Scalable {
   /// Get subtitle widget, prefer subtitleIcon over subtitle
   Widget? _buildSubtitleWidget(Size screenSize) {
     return subtitleIcon != null
-        ? Icon(subtitleIcon, size: rescale(screenSize, scalingType, subtitleIconSize, scalingSize: scalingSize), color: subtitleIconColor ?? iconColor)
+        ? Icon(subtitleIcon, size: rescale(screenSize, scalingType, subtitleIconSize, scalingSize: scalingSize, minClamp: minScalingSize, maxClamp: maxScalingSize), color: subtitleIconColor ?? iconColor)
         : (subtitle != null)
             ? Text(
                 subtitle ?? "",
-                style: TextStyle(color: textColor, fontSize: rescale(screenSize, scalingType, subtitleFontSize, scalingSize: scalingSize)),
+                style: TextStyle(color: textColor, fontSize: rescale(screenSize, scalingType, subtitleFontSize, scalingSize: scalingSize, minClamp: minScalingSize, maxClamp: maxScalingSize)),
               )
             : null;
   }
