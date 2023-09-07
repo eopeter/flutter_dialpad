@@ -163,6 +163,7 @@ class ActionButton extends StatelessWidget with Scalable {
       final child = subtitleWidget == null || hideSubtitle == true
           ? titleWidget
           : Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
                 titleWidget,
