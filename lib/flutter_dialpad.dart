@@ -376,6 +376,8 @@ class _DialPadState extends State<DialPad> {
           copyToClipboard: widget.copyToClipboard,
           readOnly: !widget.pasteFromClipboard,
           scalingType: widget.scalingType,
+          minScalingSize: widget.minScalingSize,
+          maxScalingSize: widget.maxScalingSize,
         ),
       ),
       Expanded(

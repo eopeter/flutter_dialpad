@@ -46,6 +46,12 @@ class PhoneTextField extends StatelessWidget with Scalable {
   /// [ScalingSize] for the button. Defaults to [ScalingSize.small].
   final ScalingSize scalingSize;
 
+  /// Minimum scaling size for the button content. Defaults to null.
+  final double? minScalingSize;
+
+  /// Maximum scaling size for the button content. Defaults to null.
+  final double? maxScalingSize;
+
   const PhoneTextField({
     super.key,
     this.textStyle,
@@ -61,6 +67,8 @@ class PhoneTextField extends StatelessWidget with Scalable {
     this.copyToClipboardBuilder,
     this.scalingType = ScalingType.fixed,
     this.scalingSize = ScalingSize.small,
+    this.minScalingSize,
+    this.maxScalingSize,
   });
 
   void _onCopyPressed() {
@@ -74,7 +82,7 @@ class PhoneTextField extends StatelessWidget with Scalable {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final size = rescale(screenSize, scalingType, textSize, scalingSize: scalingSize);
+    final size = rescale(screenSize, scalingType, textSize, scalingSize: scalingSize, minClamp: minScalingSize, maxClamp: maxScalingSize);
 
     final _builtTextStyle = TextStyle(
       color: textColor,
