@@ -110,6 +110,9 @@ class DialPad extends StatefulWidget {
   /// [ScalingType] for the dial button. Defaults to [ScalingSize.small].
   final ScalingSize? backspaceButtonScalingSize;
 
+  /// Add dial button icon size. Defaults to [75].
+  final double? dialButtonIconSize;
+
   /// Add dial button content padding. Defaults to [EdgeInsets.zero].
   final EdgeInsets? dialContentPadding;
 
@@ -153,6 +156,7 @@ class DialPad extends StatefulWidget {
     this.scalingSize = ScalingSize.medium,
     this.dialingButtonScalingSize,
     this.backspaceButtonScalingSize,
+    this.dialButtonIconSize,
     this.dialContentPadding,
     this.backspaceContentPadding,
     this.keyButtonContentPadding,
@@ -295,6 +299,7 @@ class _DialPadState extends State<DialPad> {
     final dialButton = widget.hideDialButton
         ? null
         : ActionButton(
+            iconSize: widget.dialButtonIconSize ?? 75,
             padding: widget.dialButtonPadding ?? widget.buttonPadding,
             buttonType: widget.buttonType,
             icon: widget.dialButtonIcon,
