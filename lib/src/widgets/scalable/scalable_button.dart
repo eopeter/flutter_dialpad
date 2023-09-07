@@ -11,6 +11,9 @@ class ScalableButton extends StatelessWidget {
   /// Callback when the button is tapped.
   final GestureTapCallback? onPressed;
 
+  /// Callback when the button is long pressed.
+  final GestureLongPressCallback? onLongPressed;
+
   /// Button display style (clipping). Defaults to [ButtonType.rectangle].
   /// [ButtonType.circle] will clip the button to a circle e.g. an iPhone keypad
   /// [ButtonType.rectangle] will clip the button to a rectangle e.g. an Android keypad
@@ -29,6 +32,7 @@ class ScalableButton extends StatelessWidget {
     super.key,
     required this.child,
     required this.onPressed,
+    this.onLongPressed,
     this.color = Colors.grey,
     this.padding = EdgeInsets.zero,
     this.buttonType = ButtonType.rectangle,
@@ -41,6 +45,7 @@ class ScalableButton extends StatelessWidget {
     return MaterialButton(
       color: createMaterialColor(color),
         onPressed: disabled ? null : onPressed,
+        onLongPress: disabled ? null : onLongPressed,
       animationDuration: Duration(milliseconds: 300),
       child: Center(
         child: child,

@@ -285,6 +285,7 @@ class _DialPadState extends State<DialPad> {
       color: widget.buttonColor,
       hideSubtitle: widget.hideSubtitle,
       onTap: () => _onKeypadPressed(key),
+      onLongPressed: () => _onKeypadPressed(altKey ?? key),
       buttonType: widget.buttonType,
       padding: widget.buttonPadding,
       contentPadding: widget.keyButtonContentPadding,

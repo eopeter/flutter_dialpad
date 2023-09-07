@@ -35,6 +35,9 @@ class ActionButton extends StatelessWidget with Scalable {
   /// Callback when the button is tapped.
   final VoidCallback? onTap;
 
+  /// Callback when the button is held down for a longer period of time.
+  final VoidCallback? onLongPressed;
+
   /// Button display style (clipping). Defaults to [ButtonType.rectangle].
   /// [ButtonType.circle] will clip the button to a circle e.g. an iPhone keypad
   /// [ButtonType.rectangle] will clip the button to a rectangle e.g. an Android keypad
@@ -86,6 +89,7 @@ class ActionButton extends StatelessWidget with Scalable {
     this.iconColor = Colors.white,
     this.subtitleIconColor,
     this.onTap,
+    this.onLongPressed,
     this.buttonType = ButtonType.rectangle,
     this.padding = const EdgeInsets.all(0),
     this.fontSize = 75,
@@ -166,6 +170,7 @@ class ActionButton extends StatelessWidget with Scalable {
           child: child,
           onPressed: onTap != null ? onTap : null,
           padding: contentPadding ?? EdgeInsets.all(0),
+          onLongPressed: onLongPressed != null ? onLongPressed : null,
         ),
       );
     });
