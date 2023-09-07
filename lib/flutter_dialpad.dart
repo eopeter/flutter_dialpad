@@ -422,4 +422,10 @@ class _DialPadState extends State<DialPad> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 }
