@@ -1,24 +1,24 @@
 /// Scaling Factor for the [ScalableButton]
 enum ScalingSize {
-  /// Scalar value: 0.0003
+  /// Scalar value: 0.001
   smallest,
 
-  /// Scalar value: 0.0006
+  /// Scalar value: 0.002
   smaller,
 
-  /// Scalar value: 0.001
+  /// Scalar value: 0.004
   small,
 
-  /// Scalar value: 0.003
+  /// Scalar value: 0.006
   medium,
 
-  /// Scalar value: 0.006
+  /// Scalar value: 0.008
   large,
 
-  /// Scalar value: 0.01
+  /// Scalar value: 0.009
   veryLarge,
 
-  /// Scalar value: 0.05
+  /// Scalar value: 0.01
   gigantic;
 
   double get scalar {
