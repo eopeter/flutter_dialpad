@@ -18,6 +18,9 @@ class DialPad extends StatefulWidget {
   /// Callback when a key is pressed.
   final ValueSetter<String>? keyPressed;
 
+  /// Callback when text controller's content changed.
+  final ValueChanged<String>? onTextChanged;
+
   /// Whether to hide the dial button. Defaults to false.
   final bool hideDialButton;
 
@@ -140,6 +143,7 @@ class DialPad extends StatefulWidget {
   DialPad({
     this.makeCall,
     this.keyPressed,
+    this.onTextChanged,
     this.hideDialButton = false,
     this.hideBackspaceButton = false,
     this.hideSubtitle = false,
@@ -248,6 +252,13 @@ class _DialPadState extends State<DialPad> {
     _controller = MaskedTextController(mask: widget.outputMask);
   }
 
+  /// Handles text field content change, notifies [onTextChanged] callback
+  void _onTextChanged() {
+    if (widget.onTextChanged != null) {
+      widget.onTextChanged!(_controller.text);
+    }
+  }
+
   /// Handles keypad button press, this includes numbers and [DialActionKey] except [DialActionKey.backspace]
   void _onKeyPressed(String? value) {
     if (value != null) {
@@ -277,7 +288,7 @@ class _DialPadState extends State<DialPad> {
     }
   }
 
-  /// Handles keyboard button presses
+  /// Handles all keyboard / UI keypad button presses
   void _onKeypadPressed(KeyValue key) {
     if (key is ActionKey && key.action == DialActionKey.backspace) {
       // handle backspace
@@ -290,6 +301,9 @@ class _DialPadState extends State<DialPad> {
       // For numbers, and all actions except backspace
       _onKeyPressed(key.value);
     }
+
+    // notifies UI of input changed
+    _onTextChanged();
   }
 
   Widget _defaultKeypadButtonBuilder(BuildContext context, int index, KeyValue key, KeyValue? altKey, String? hint) {
@@ -344,7 +358,7 @@ class _DialPadState extends State<DialPad> {
     final backspaceButton = widget.hideBackspaceButton || (_value.isEmpty && widget.hideBackspaceOnEmpty)
         ? null
         : ActionButton(
-            onTap: _onBackspacePressed,
+            onTap: () => _onKeypadPressed(ActionKey.backspace()),
             // disabled: _value.isEmpty,
             buttonType: widget.buttonType,
             iconSize: widget.backspaceButtonIconSize ?? 50,

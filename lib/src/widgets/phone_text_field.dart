@@ -22,9 +22,6 @@ class PhoneTextField extends StatelessWidget with Scalable {
   /// The decoration to show around the text field. Defaults to [InputDecoration(border: InputBorder.none)].
   final InputDecoration decoration;
 
-  /// Callback when the text field is changed.
-  final ValueChanged<String>? onChanged;
-
   /// Add copyToClipboard widget to the text field. Defaults to false.
   final bool copyToClipboard;
 
@@ -59,7 +56,6 @@ class PhoneTextField extends StatelessWidget with Scalable {
     this.textColor = Colors.grey,
     this.textSize = 15,
     this.decoration = const InputDecoration(border: InputBorder.none),
-    this.onChanged,
     this.readOnly = false,
     this.textAlign = TextAlign.center,
     this.copyToClipboard = false,
@@ -95,7 +91,6 @@ class PhoneTextField extends StatelessWidget with Scalable {
       readOnly: readOnly,
       textAlign: textAlign,
       controller: controller,
-      onChanged: onChanged,
     );
 
     if (copyToClipboard) {
