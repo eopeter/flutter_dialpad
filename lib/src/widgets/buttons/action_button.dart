@@ -35,6 +35,9 @@ class ActionButton extends StatelessWidget with Scalable {
   /// Callback when the button is tapped.
   final VoidCallback? onTap;
 
+  /// Callback when the button is held down for a longer period of time.
+  final VoidCallback? onLongPressed;
+
   /// Button display style (clipping). Defaults to [ButtonType.rectangle].
   /// [ButtonType.circle] will clip the button to a circle e.g. an iPhone keypad
   /// [ButtonType.rectangle] will clip the button to a rectangle e.g. an Android keypad
@@ -72,6 +75,15 @@ class ActionButton extends StatelessWidget with Scalable {
   /// [ScalingSize] for the button. Defaults to [ScalingSize.small].
   final ScalingSize scalingSize;
 
+  /// Minimum scaling size for the button content. Defaults to null.
+  final double? minScalingSize;
+
+  /// Maximum scaling size for the button content. Defaults to null.
+  final double? maxScalingSize;
+
+  /// Padding around the button's content. Defaults to null.
+  final EdgeInsets? contentPadding;
+
   ActionButton({
     this.key,
     this.title,
@@ -84,6 +96,7 @@ class ActionButton extends StatelessWidget with Scalable {
     this.iconColor = Colors.white,
     this.subtitleIconColor,
     this.onTap,
+    this.onLongPressed,
     this.buttonType = ButtonType.rectangle,
     this.padding = const EdgeInsets.all(0),
     this.fontSize = 75,
@@ -93,11 +106,14 @@ class ActionButton extends StatelessWidget with Scalable {
     this.disabled = false,
     this.scalingType = ScalingType.fixed,
     this.scalingSize = ScalingSize.small,
+    this.minScalingSize,
+    this.maxScalingSize,
+    this.contentPadding,
   });
 
   /// Get title widget, prefer icon over title
   Widget _buildTitleWidget(Size screenSize) {
-    double size = rescale(screenSize, scalingType, icon != null ? iconSize : fontSize, scalingSize: scalingSize);
+    double size = rescale(screenSize, scalingType, icon != null ? iconSize : fontSize, scalingSize: scalingSize, minClamp: minScalingSize, maxClamp: maxScalingSize);
     Widget widget = icon != null
         ? Icon(icon, size: size, color: iconColor)
         : Text(
@@ -123,11 +139,11 @@ class ActionButton extends StatelessWidget with Scalable {
   /// Get subtitle widget, prefer subtitleIcon over subtitle
   Widget? _buildSubtitleWidget(Size screenSize) {
     return subtitleIcon != null
-        ? Icon(subtitleIcon, size: rescale(screenSize, scalingType, subtitleIconSize, scalingSize: scalingSize), color: subtitleIconColor ?? iconColor)
+        ? Icon(subtitleIcon, size: rescale(screenSize, scalingType, subtitleIconSize, scalingSize: scalingSize, minClamp: minScalingSize, maxClamp: maxScalingSize), color: subtitleIconColor ?? iconColor)
         : (subtitle != null)
             ? Text(
                 subtitle ?? "",
-                style: TextStyle(color: textColor, fontSize: rescale(screenSize, scalingType, subtitleFontSize, scalingSize: scalingSize)),
+                style: TextStyle(color: textColor, fontSize: rescale(screenSize, scalingType, subtitleFontSize, scalingSize: scalingSize, minClamp: minScalingSize, maxClamp: maxScalingSize)),
               )
             : null;
   }
@@ -147,6 +163,7 @@ class ActionButton extends StatelessWidget with Scalable {
       final child = subtitleWidget == null || hideSubtitle == true
           ? titleWidget
           : Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
                 titleWidget,
@@ -161,8 +178,9 @@ class ActionButton extends StatelessWidget with Scalable {
           buttonType: buttonType,
           disabled: disabled,
           child: child,
-          onTap: onTap != null ? onTap : null,
-          padding: EdgeInsets.zero,
+          onPressed: onTap != null ? onTap : null,
+          padding: contentPadding ?? EdgeInsets.all(0),
+          onLongPressed: onLongPressed != null ? onLongPressed : null,
         ),
       );
     });
