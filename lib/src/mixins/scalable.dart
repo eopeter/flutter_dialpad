@@ -35,10 +35,10 @@ mixin Scalable {
 
     // apply clamps
     if (minClamp != null && sizeFactor < minClamp) {
-      print("[minClamp] adjusting sizeFactor from $sizeFactor to $minClamp");
+      // print("[minClamp] adjusting sizeFactor from $sizeFactor to $minClamp");
       sizeFactor = minClamp;
     } else if (maxClamp != null && sizeFactor > maxClamp) {
-      print("[maxClamp] adjusting sizeFactor from $sizeFactor to $maxClamp");
+      // print("[maxClamp] adjusting sizeFactor from $sizeFactor to $maxClamp");
       sizeFactor = maxClamp;
     }
 
