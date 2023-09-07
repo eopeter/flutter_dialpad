@@ -45,6 +45,10 @@ Scaling Size provides an easy way to specify the scalar multiplier for the scali
 #### Scalable
 If you wish to add your own Scalable button, feel free to create a widget  `with Scalable` to make use of the `rescale` function.
 
+#### Clamping
+
+Scaled UI elements may become extremely small, using `minScalingSize` and `maxScalingSize` you can clamp the scaling to a percentage of the original size. This is useful for ensuring the UI is still usable.
+
 ## Screenshots  
   
 ![iOS Screenshot](screenshots/screenshot1.png?raw=true "iOS Screenshot") | ![Android Screenshot](screenshots/screenshot2.png?raw=true "Android Screenshot")  
