@@ -24,19 +24,19 @@ enum ScalingSize {
   double get scalar {
     switch (this) {
       case ScalingSize.smallest:
-        return 0.0003;
-      case ScalingSize.smaller:
-        return 0.0006;
-      case ScalingSize.small:
         return 0.001;
+      case ScalingSize.smaller:
+        return 0.002;
+      case ScalingSize.small:
+        return 0.004;
       case ScalingSize.medium:
-        return 0.003;
-      case ScalingSize.large:
         return 0.006;
+      case ScalingSize.large:
+        return 0.008;
       case ScalingSize.veryLarge:
-        return 0.01;
+        return 0.009;
       case ScalingSize.gigantic:
-        return 0.05;
+        return 0.01;
     }
   }
 }

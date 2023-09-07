@@ -110,6 +110,15 @@ class DialPad extends StatefulWidget {
   /// [ScalingType] for the dial button. Defaults to [ScalingSize.small].
   final ScalingSize? backspaceButtonScalingSize;
 
+  /// Add dial button content padding. Defaults to [EdgeInsets.zero].
+  final EdgeInsets? dialContentPadding;
+
+  /// Add backspace button content padding. Defaults to [EdgeInsets.zero].
+  final EdgeInsets? backspaceContentPadding;
+
+  /// Add keypad button content padding used by [_defaultKeypadButtonBuilder]. Defaults to [EdgeInsets.zero].
+  final EdgeInsets? keyButtonContentPadding;
+
   DialPad({
     this.makeCall,
     this.keyPressed,
@@ -144,6 +153,9 @@ class DialPad extends StatefulWidget {
     this.scalingSize = ScalingSize.medium,
     this.dialingButtonScalingSize,
     this.backspaceButtonScalingSize,
+    this.dialContentPadding,
+    this.backspaceContentPadding,
+    this.keyButtonContentPadding,
   });
 
   /// Returns a [DialPad] with an iOS-style design (i.e. Apple).
@@ -263,6 +275,7 @@ class _DialPadState extends State<DialPad> {
       onTap: () => _onKeypadPressed(key),
       buttonType: widget.buttonType,
       padding: widget.buttonPadding,
+      contentPadding: widget.keyButtonContentPadding,
       textColor: widget.buttonTextColor,
       iconColor: widget.buttonTextColor,
       subtitleIconColor: widget.buttonTextColor,
@@ -290,6 +303,7 @@ class _DialPadState extends State<DialPad> {
             onTap: _onDialPressed,
             scalingType: widget.scalingType,
             scalingSize: widget.dialingButtonScalingSize ?? widget.scalingSize,
+            contentPadding: widget.dialContentPadding,
             // NOTE(cybex-dev) add as option in future
             // disabled: _value.isEmpty || widget.makeCall == null,
           );
@@ -308,6 +322,7 @@ class _DialPadState extends State<DialPad> {
             color: Colors.transparent,
             scalingType: widget.scalingType,
             scalingSize: widget.backspaceButtonScalingSize ?? widget.scalingSize,
+            contentPadding: widget.backspaceContentPadding,
           );
 
     /// Footer contains the dial and backspace buttons

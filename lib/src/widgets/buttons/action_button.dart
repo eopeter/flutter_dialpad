@@ -72,6 +72,8 @@ class ActionButton extends StatelessWidget with Scalable {
   /// [ScalingSize] for the button. Defaults to [ScalingSize.small].
   final ScalingSize scalingSize;
 
+  final EdgeInsets? contentPadding;
+
   ActionButton({
     this.key,
     this.title,
@@ -93,6 +95,7 @@ class ActionButton extends StatelessWidget with Scalable {
     this.disabled = false,
     this.scalingType = ScalingType.fixed,
     this.scalingSize = ScalingSize.small,
+    this.contentPadding,
   });
 
   /// Get title widget, prefer icon over title
@@ -162,7 +165,7 @@ class ActionButton extends StatelessWidget with Scalable {
           disabled: disabled,
           child: child,
           onTap: onTap != null ? onTap : null,
-          padding: EdgeInsets.zero,
+          padding: contentPadding ?? EdgeInsets.all(0),
         ),
       );
     });
