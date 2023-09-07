@@ -134,6 +134,9 @@ class DialPad extends StatefulWidget {
   /// Add keypad button content padding used by [_defaultKeypadButtonBuilder]. Defaults to [EdgeInsets.zero].
   final EdgeInsets? keyButtonContentPadding;
 
+  /// Hide backspace button when text field is empty. Defaults to [false].
+  final bool hideBackspaceOnEmpty;
+
   DialPad({
     this.makeCall,
     this.keyPressed,
@@ -176,6 +179,7 @@ class DialPad extends StatefulWidget {
     this.dialContentPadding,
     this.backspaceContentPadding,
     this.keyButtonContentPadding,
+    this.hideBackspaceOnEmpty = false,
   });
 
   /// Returns a [DialPad] with an iOS-style design (i.e. Apple).
@@ -205,6 +209,7 @@ class DialPad extends StatefulWidget {
       backspaceButtonPadding: EdgeInsets.all(12),
       dialButtonPadding: EdgeInsets.all(8),
       maxScalingSize: 0.7,
+      hideBackspaceOnEmpty: true,
     );
   }
 
@@ -336,7 +341,7 @@ class _DialPadState extends State<DialPad> {
           );
 
     /// Backspace button
-    final backspaceButton = widget.hideBackspaceButton
+    final backspaceButton = widget.hideBackspaceButton || (_value.isEmpty && widget.hideBackspaceOnEmpty)
         ? null
         : ActionButton(
             onTap: _onBackspacePressed,
