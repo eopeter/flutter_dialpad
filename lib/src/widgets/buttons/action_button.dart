@@ -164,7 +164,7 @@ class ActionButton extends StatelessWidget with Scalable {
           buttonType: buttonType,
           disabled: disabled,
           child: child,
-          onTap: onTap != null ? onTap : null,
+          onPressed: onTap != null ? onTap : null,
           padding: contentPadding ?? EdgeInsets.all(0),
         ),
       );

@@ -9,7 +9,7 @@ class ScalableButton extends StatelessWidget {
   final bool disabled;
 
   /// Callback when the button is tapped.
-  final GestureTapCallback? onTap;
+  final GestureTapCallback? onPressed;
 
   /// Button display style (clipping). Defaults to [ButtonType.rectangle].
   /// [ButtonType.circle] will clip the button to a circle e.g. an iPhone keypad
@@ -28,7 +28,7 @@ class ScalableButton extends StatelessWidget {
   const ScalableButton({
     super.key,
     required this.child,
-    required this.onTap,
+    required this.onPressed,
     this.color = Colors.grey,
     this.padding = EdgeInsets.zero,
     this.buttonType = ButtonType.rectangle,
@@ -40,7 +40,7 @@ class ScalableButton extends StatelessWidget {
     // Use MaterialButton to get the Material ripple, splash and highlight colors including animations and gestures.
     return MaterialButton(
       color: createMaterialColor(color),
-      onPressed: disabled ? null : onTap,
+        onPressed: disabled ? null : onPressed,
       animationDuration: Duration(milliseconds: 300),
       child: Center(
         child: child,
