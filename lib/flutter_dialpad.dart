@@ -15,6 +15,9 @@ class DialPad extends StatefulWidget {
   /// Callback when the dial button is pressed.
   final ValueSetter<String>? makeCall;
 
+  /// Initial unformatted text to display in the text field e.g. 15551234567
+  final String? initialText;
+
   /// Callback when a key is pressed.
   final ValueSetter<String>? keyPressed;
 
@@ -142,6 +145,7 @@ class DialPad extends StatefulWidget {
 
   DialPad({
     this.makeCall,
+    this.initialText,
     this.keyPressed,
     this.onTextChanged,
     this.hideDialButton = false,
@@ -249,7 +253,8 @@ class _DialPadState extends State<DialPad> {
   @override
   void initState() {
     super.initState();
-    _controller = MaskedTextController(mask: widget.outputMask);
+    _controller = MaskedTextController(text: widget.initialText, mask: widget.outputMask);
+    _value = _controller.text;
   }
 
   /// Handles text field content change, notifies [onTextChanged] callback
