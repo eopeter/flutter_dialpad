@@ -1,4 +1,5 @@
 ## [1.1.0] - 2023-00-23
+
 * Add custom keypad `keypad_generator`s with extensibility options.
 * Add `DialButton`with (future release) custom `keypadButtonBuilder` for specific usecases.
 * Refactor Flutter Dialpad with prebuilt UIs (iOS, metro theme styles).
@@ -24,7 +25,7 @@
 * Add scale clamping as a percentage of icon/text size for improved UI/UX, with defaults to [0.2, 1.0]
 * Added `hideBackspaceOnEmpty` to automatically hide backspace button when input is empty
 * Added `onTextChanged` to capture input text changed as displayed in the `PhoneTextInput`
-* Add `initialText` property to autofill `PhoneTextInput`
+* Add `initialText`, `withNumber` properties to autofill `PhoneTextInput`
 
 ## [1.0.5] - 2023-02-08
 
