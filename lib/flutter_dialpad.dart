@@ -15,6 +15,12 @@ class DialPad extends StatefulWidget {
   /// Callback when the dial button is pressed.
   final ValueSetter<String>? makeCall;
 
+  /// Initial unformatted text to display in the text field e.g. 15551234567
+  final String? initialText;
+
+  /// Updated number to display in the text field e.g. 15551234567
+  final String? withNumber;
+
   /// Callback when a key is pressed.
   final ValueSetter<String>? keyPressed;
 
@@ -142,6 +148,8 @@ class DialPad extends StatefulWidget {
 
   DialPad({
     this.makeCall,
+    this.initialText,
+    this.withNumber,
     this.keyPressed,
     this.onTextChanged,
     this.hideDialButton = false,
@@ -249,7 +257,8 @@ class _DialPadState extends State<DialPad> {
   @override
   void initState() {
     super.initState();
-    _controller = MaskedTextController(mask: widget.outputMask);
+    _controller = MaskedTextController(text: widget.initialText ?? widget.withNumber, mask: widget.outputMask);
+    _value = _controller.text;
   }
 
   /// Handles text field content change, notifies [onTextChanged] callback
@@ -327,6 +336,19 @@ class _DialPadState extends State<DialPad> {
       minScalingSize: widget.minScalingSize,
       maxScalingSize: widget.maxScalingSize,
     );
+  }
+
+  @override
+  void didUpdateWidget(DialPad oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    // if the withNumber property has changed, update the text field
+    if (widget.withNumber != null && widget.withNumber != oldWidget.withNumber) {
+      // update text field
+      _controller.updateText(widget.withNumber ?? "");
+      // update value with masked number
+      _value = _controller.text;
+    }
   }
 
   @override
