@@ -2,8 +2,7 @@ library flutter_dialpad;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
-// disabled temporarily
-// import 'package:flutter_dtmf/dtmf.dart';
+import 'package:flutter_dtmf/dtmf.dart';
 
 import 'src/flutter_dialpad.dart';
 
@@ -198,10 +197,12 @@ class DialPad extends StatefulWidget {
   factory DialPad.ios({
     ValueSetter<String>? makeCall,
     ValueSetter<String>? keyPressed,
+    bool enableDtmf = false,
   }) {
     return DialPad(
       makeCall: makeCall,
       keyPressed: keyPressed,
+      enableDtmf: enableDtmf,
       // Cupertino icons should be used here
       dialButtonIcon: Icons.phone,
       backspaceButtonIconColor: Colors.grey,
@@ -229,11 +230,13 @@ class DialPad extends StatefulWidget {
   factory DialPad.metro({
     ValueSetter<String>? makeCall,
     ValueSetter<String>? keyPressed,
+    bool enableDtmf = false,
   }) {
     return DialPad(
       makeCall: makeCall,
       keyPressed: keyPressed,
-      // Cupertino icons should be used here
+      enableDtmf: enableDtmf,
+      // metro icons should be used here
       dialButtonIcon: Icons.phone,
       backspaceButtonIconColor: Colors.grey,
       generator: PhoneKeypadGenerator(),
@@ -309,6 +312,10 @@ class _DialPadState extends State<DialPad> {
     } else {
       // For numbers, and all actions except backspace
       _onKeyPressed(key.value);
+      // Play the dtmf tone if enabled
+      if (widget.enableDtmf) {
+        Dtmf.playTone(digits: key.value.trim(), samplingRate: 8000, durationMs: 160);
+      }
     }
 
     // notifies UI of input changed

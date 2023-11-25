@@ -22,6 +22,7 @@ class DialPadIos extends StatelessWidget {
       body: DialPad.ios(
         makeCall: _makeCall,
         keyPressed: _keyPressed,
+        enableDtmf: true,
       ),
     );
   }
