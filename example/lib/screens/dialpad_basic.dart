@@ -21,6 +21,7 @@ class DialPadBasic extends StatelessWidget {
         makeCall: _makeCall,
         keyPressed: _keyPressed,
         onTextChanged: (text) => print(text),
+        enableDtmf: true,
       ),
     );
   }

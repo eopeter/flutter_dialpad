@@ -197,10 +197,12 @@ class DialPad extends StatefulWidget {
   factory DialPad.ios({
     ValueSetter<String>? makeCall,
     ValueSetter<String>? keyPressed,
+    bool enableDtmf = false,
   }) {
     return DialPad(
       makeCall: makeCall,
       keyPressed: keyPressed,
+      enableDtmf: enableDtmf,
       // Cupertino icons should be used here
       dialButtonIcon: Icons.phone,
       backspaceButtonIconColor: Colors.grey,
@@ -228,11 +230,13 @@ class DialPad extends StatefulWidget {
   factory DialPad.metro({
     ValueSetter<String>? makeCall,
     ValueSetter<String>? keyPressed,
+    bool enableDtmf = false,
   }) {
     return DialPad(
       makeCall: makeCall,
       keyPressed: keyPressed,
-      // Cupertino icons should be used here
+      enableDtmf: enableDtmf,
+      // metro icons should be used here
       dialButtonIcon: Icons.phone,
       backspaceButtonIconColor: Colors.grey,
       generator: PhoneKeypadGenerator(),
@@ -293,9 +297,6 @@ class _DialPadState extends State<DialPad> {
   void _onDialPressed() {
     if (widget.makeCall != null && _value.isNotEmpty) {
       widget.makeCall!(_value);
-      if (widget.enableDtmf) {
-        Dtmf.playTone(digits: _value);
-      }
     }
   }
 
@@ -311,6 +312,10 @@ class _DialPadState extends State<DialPad> {
     } else {
       // For numbers, and all actions except backspace
       _onKeyPressed(key.value);
+      // Play the dtmf tone if enabled
+      if (widget.enableDtmf) {
+        Dtmf.playTone(digits: key.value.trim(), samplingRate: 8000, durationMs: 160);
+      }
     }
 
     // notifies UI of input changed

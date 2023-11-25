@@ -21,6 +21,7 @@ class DialPadMetro extends StatelessWidget {
       body: DialPad.metro(
         makeCall: _makeCall,
         keyPressed: _keyPressed,
+        enableDtmf: true,
       ),
     );
   }

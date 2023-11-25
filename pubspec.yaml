@@ -12,7 +12,7 @@ dependencies:
 
 #  flutter_dtmf: ^2.0.2
   # Since flutter_masked_text2 is no longer supported, we use a forked version until a package with fix becomes available or an alternative is implemented
-  flutter_dtmf: ^2.0.2
+  flutter_dtmf: ^3.0.0
   flutter_masked_text2:
     git:
         url: https://github.com/cybex-dev/flutter_masked_text
