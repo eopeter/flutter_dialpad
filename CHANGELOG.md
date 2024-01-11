@@ -1,3 +1,7 @@
+## [1.1.1] - 2023-01-12
+
+* Fix missing `keyPressed` event for individual keys pressed on the keypad.
+
 ## [1.1.0] - 2023-00-23
 
 * Add custom keypad `keypad_generator`s with extensibility options.

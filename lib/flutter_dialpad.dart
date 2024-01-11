@@ -274,6 +274,7 @@ class _DialPadState extends State<DialPad> {
   /// Handles keypad button press, this includes numbers and [DialActionKey] except [DialActionKey.backspace]
   void _onKeyPressed(String? value) {
     if (value != null) {
+      widget.keyPressed?.call(value);
       setState(() {
         _value += value;
         _controller.updateText(_value);
